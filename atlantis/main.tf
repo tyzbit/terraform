@@ -1,6 +1,5 @@
 provider "kubernetes" {
-  version     = ">= 1.12.0"
-  config_path = "~/.kube/config"
+  version = ">= 1.12.0"
 }
 
 provider aws {
