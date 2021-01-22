@@ -14,5 +14,5 @@ resource "newrelic_synthetics_alert_condition" "qtosw" {
   policy_id = newrelic_alert_policy.web-checks.id
 
   name       = "QTOSW Web Alert Policy"
-  monitor_id = data.newrelic_synthetics_monitor.qtosw.id
+  monitor_id = newrelic_synthetics_monitor.qtosw.id
 }

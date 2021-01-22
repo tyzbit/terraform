@@ -14,7 +14,7 @@ resource "newrelic_synthetics_alert_condition" "torrent" {
   policy_id = newrelic_alert_policy.web-checks.id
 
   name       = "Torrent Web Alert Policy"
-  monitor_id = data.newrelic_synthetics_monitor.torrent.id
+  monitor_id = newrelic_synthetics_monitor.torrent.id
 }
 
 resource "newrelic_synthetics_monitor" "rancher" {
@@ -33,7 +33,7 @@ resource "newrelic_synthetics_alert_condition" "rancher" {
   policy_id = newrelic_alert_policy.web-checks.id
 
   name       = "Rancher Web Alert Policy"
-  monitor_id = data.newrelic_synthetics_monitor.rancher.id
+  monitor_id = newrelic_synthetics_monitor.rancher.id
 }
 
 resource "newrelic_synthetics_monitor" "cloud" {
@@ -52,7 +52,7 @@ resource "newrelic_synthetics_alert_condition" "cloud" {
   policy_id = newrelic_alert_policy.web-checks.id
 
   name       = "NextCloud Web Alert Policy"
-  monitor_id = data.newrelic_synthetics_monitor.cloud.id
+  monitor_id = newrelic_synthetics_monitor.cloud.id
 }
 
 resource "newrelic_synthetics_monitor" "plex" {
@@ -71,7 +71,7 @@ resource "newrelic_synthetics_alert_condition" "plex" {
   policy_id = newrelic_alert_policy.web-checks.id
 
   name       = "Plex Web Alert Policy"
-  monitor_id = data.newrelic_synthetics_monitor.plex.id
+  monitor_id = newrelic_synthetics_monitor.plex.id
 }
 
 resource "newrelic_synthetics_monitor" "bc" {
@@ -90,5 +90,5 @@ resource "newrelic_synthetics_alert_condition" "bc" {
   policy_id = newrelic_alert_policy.web-checks.id
 
   name       = "Plex Web Alert Policy"
-  monitor_id = data.newrelic_synthetics_monitor.bc.id
+  monitor_id = newrelic_synthetics_monitor.bc.id
 }
