@@ -70,6 +70,26 @@ resource "kubernetes_deployment" "atlantis" {
           }
 
           env {
+            name = "TF_VAR_nr_account_id"
+            value_from {
+              secret_key_ref {
+                name = "terraform-nr-keys"
+                key  = "TF_VAR_nr_account_id"
+              }
+            }
+          }
+
+          env {
+            name = "TF_VAR_nr_user_api_key"
+            value_from {
+              secret_key_ref {
+                name = "terraform-nr-keys"
+                key  = "TF_VAR_nr_user_api_key"
+              }
+            }
+          }
+
+          env {
             name = "ATLANTIS_GH_WEBHOOK_SECRET"
             value_from {
               secret_key_ref {
@@ -125,7 +145,10 @@ resource "kubernetes_namespace" "atlantis" {
   }
 
   lifecycle {
-    ignore_changes = [metadata[0].annotations]
+    ignore_changes = [
+      metadata[0].annotations,
+      metadata[0].labels
+    ]
   }
 }
 
@@ -235,6 +258,10 @@ resource "kubernetes_secret" "gh-webhook" {
     "app-id"         = "97251"
     "webhook-secret" = aws_ssm_parameter.gh-webhook.value
   }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
+  }
 }
 
 resource "aws_ssm_parameter" "gh-app-key" {
@@ -257,5 +284,9 @@ resource "kubernetes_secret" "gh-app-key" {
 
   data = {
     "atlantis-app-key" = aws_ssm_parameter.gh-app-key.value
+  }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
   }
 }
