@@ -42,7 +42,7 @@ terraform {
 
   backend "s3" {
     bucket         = "tyzbit.terraform"
-    key            = "terraform.tfstate"
+    key            = "atlantis.tfstate"
     region         = "us-east-1"
     dynamodb_table = "tf-locking-table"
   }
