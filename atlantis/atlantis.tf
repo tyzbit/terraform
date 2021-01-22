@@ -70,7 +70,7 @@ resource "kubernetes_deployment" "atlantis" {
           }
 
           env {
-            name = "TF_VAR_nr_account_id"
+            name = "NEW_RELIC_ACCOUNT_ID"
             value_from {
               secret_key_ref {
                 name = "terraform-newrelic-keys"
@@ -78,9 +78,8 @@ resource "kubernetes_deployment" "atlantis" {
               }
             }
           }
-
           env {
-            name = "TF_VAR_nr_user_api_key"
+            name = "NEW_RELIC_API_KEY"
             value_from {
               secret_key_ref {
                 name = "terraform-newrelic-keys"
