@@ -1,10 +1,3 @@
-data "newrelic_synthetics_monitor" "torrent" {
-  name = "Torrent"
-  depends_on = [
-    newrelic_synthetics_monitor.torrent
-  ]
-}
-
 resource "newrelic_synthetics_monitor" "torrent" {
   name      = "Torrent"
   type      = "SIMPLE"
@@ -22,13 +15,6 @@ resource "newrelic_synthetics_alert_condition" "torrent" {
 
   name       = "Torrent Web Alert Policy"
   monitor_id = data.newrelic_synthetics_monitor.torrent.id
-}
-
-data "newrelic_synthetics_monitor" "rancher" {
-  name = "Rancher"
-  depends_on = [
-    newrelic_synthetics_monitor.rancher
-  ]
 }
 
 resource "newrelic_synthetics_monitor" "rancher" {
@@ -50,13 +36,6 @@ resource "newrelic_synthetics_alert_condition" "rancher" {
   monitor_id = data.newrelic_synthetics_monitor.rancher.id
 }
 
-data "newrelic_synthetics_monitor" "cloud" {
-  name = "NextCloud"
-  depends_on = [
-    newrelic_synthetics_monitor.cloud
-  ]
-}
-
 resource "newrelic_synthetics_monitor" "cloud" {
   name      = "NextCloud"
   type      = "SIMPLE"
@@ -76,13 +55,6 @@ resource "newrelic_synthetics_alert_condition" "cloud" {
   monitor_id = data.newrelic_synthetics_monitor.cloud.id
 }
 
-data "newrelic_synthetics_monitor" "plex" {
-  name = "Plex"
-  depends_on = [
-    newrelic_synthetics_monitor.plex
-  ]
-}
-
 resource "newrelic_synthetics_monitor" "plex" {
   name      = "Plex"
   type      = "SIMPLE"
@@ -100,13 +72,6 @@ resource "newrelic_synthetics_alert_condition" "plex" {
 
   name       = "Plex Web Alert Policy"
   monitor_id = data.newrelic_synthetics_monitor.plex.id
-}
-
-data "newrelic_synthetics_monitor" "bc" {
-  name = "BC"
-  depends_on = [
-    newrelic_synthetics_monitor.bc
-  ]
 }
 
 resource "newrelic_synthetics_monitor" "bc" {

@@ -1,10 +1,3 @@
-data "newrelic_synthetics_monitor" "qtosw" {
-  name = "QTOSW"
-  depends_on = [
-    newrelic_synthetics_monitor.qtosw
-  ]
-}
-
 resource "newrelic_synthetics_monitor" "qtosw" {
   name      = "QTOSW"
   type      = "SIMPLE"
