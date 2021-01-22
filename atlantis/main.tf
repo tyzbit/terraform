@@ -27,11 +27,12 @@ locals {
 EOF
 
   env_map = {
-    ATLANTIS_DEFAULT_TF_VERSION = "0.13.6"
-    ATLANTIS_REPO_CONFIG_JSON   = local.repo_config
-    ATLANTIS_ATLANTIS_URL       = "https://${local.atlantis_hostname}"
-    ATLANTIS_REPO_WHITELIST     = "github.com/tyzbit/*"
-    ATLANTIS_PORT               = 4141
+    ATLANTIS_DEFAULT_TF_VERSION      = "0.13.6"
+    ATLANTIS_REPO_CONFIG_JSON        = local.repo_config
+    ATLANTIS_ATLANTIS_URL            = "https://${local.atlantis_hostname}"
+    ATLANTIS_REPO_WHITELIST          = "github.com/tyzbit/*"
+    ATLANTIS_PORT                    = 4141
+    ATLANTIS_HIDE_PREV_PLAN_COMMENTS = "true"
   }
 }
 
