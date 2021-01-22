@@ -17,7 +17,7 @@ terraform {
   }
 }
 
-provider "newrelic" {
+provider "newrelic/newrelic" {
   version    = "~> 2.15.0"
   account_id = var.nr_account_id
   api_key    = var.nr_user_api_key

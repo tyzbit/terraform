@@ -29,7 +29,7 @@ resource "kubernetes_deployment" "atlantis" {
           args = [
             "server",
             "--gh-app-id",
-            "97251",
+            "97394",
             "--gh-app-key-file",
             "/etc/gh/atlantis-app-key",
             "--write-git-creds"
@@ -73,7 +73,7 @@ resource "kubernetes_deployment" "atlantis" {
             name = "TF_VAR_nr_account_id"
             value_from {
               secret_key_ref {
-                name = "terraform-nr-keys"
+                name = "terraform-newrelic-keys"
                 key  = "TF_VAR_nr_account_id"
               }
             }
@@ -83,7 +83,7 @@ resource "kubernetes_deployment" "atlantis" {
             name = "TF_VAR_nr_user_api_key"
             value_from {
               secret_key_ref {
-                name = "terraform-nr-keys"
+                name = "terraform-newrelic-keys"
                 key  = "TF_VAR_nr_user_api_key"
               }
             }
@@ -174,43 +174,6 @@ resource "kubernetes_service" "atlantis" {
   }
 }
 
-resource "kubernetes_ingress" "atlantis" {
-  metadata {
-    name      = "atlantis"
-    namespace = "atlantis"
-    labels    = { app = "atlantis" }
-  }
-  spec {
-    rule {
-      host = local.atlantis_hostname
-      http {
-        path {
-          path = "/*"
-          backend {
-            service_name = "ssl-redirect"
-            service_port = "use-annotation"
-          }
-        }
-        path {
-          path = "/*"
-          backend {
-            service_name = "atlantis"
-            service_port = "4141"
-          }
-        }
-      }
-    }
-  }
-
-  depends_on = [
-    kubernetes_service.atlantis
-  ]
-
-  lifecycle {
-    ignore_changes = [metadata[0].annotations]
-  }
-}
-
 resource "kubernetes_service_account" "atlantis" {
   automount_service_account_token = true
   metadata {
@@ -255,7 +218,7 @@ resource "kubernetes_secret" "gh-webhook" {
   }
 
   data = {
-    "app-id"         = "97251"
+    "app-id"         = "97394"
     "webhook-secret" = aws_ssm_parameter.gh-webhook.value
   }
 
