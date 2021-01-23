@@ -88,6 +88,7 @@ resource "kubernetes_deployment" "atlantis" {
             }
           }
 
+          env {
             name = "ATLANTIS_GH_WEBHOOK_SECRET"
             value_from {
               secret_key_ref {

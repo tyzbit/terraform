@@ -29,7 +29,7 @@ resource "kubernetes_secret" "terraform-aws-keys" {
   }
 
   data = {
-    "AWS_ACCESS_KEY_ID" = aws_ssm_parameter.aws-access-key.value
+    "AWS_ACCESS_KEY_ID"     = aws_ssm_parameter.aws-access-key.value
     "AWS_SECRET_ACCESS_KEY" = aws_ssm_parameter.aws-secret-key.value
   }
 
@@ -70,7 +70,7 @@ resource "kubernetes_secret" "terraform-newrelic-keys" {
 
   data = {
     "NEW_RELIC_ACCOUNT_ID" = aws_ssm_parameter.nr-account-id.value
-    "NEW_RELIC_API_KEY" = aws_ssm_parameter.nr-user-key.value
+    "NEW_RELIC_API_KEY"    = aws_ssm_parameter.nr-user-key.value
   }
 
   lifecycle {

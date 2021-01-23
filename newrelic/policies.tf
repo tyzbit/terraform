@@ -3,6 +3,21 @@ resource "newrelic_alert_policy" "web-checks" {
   incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
 }
 
+resource "newrelic_alert_policy" "bitcoin-alerts" {
+  name                = "Bitcoin Alerts"
+  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
+}
+
+resource "newrelic_alert_policy" "media-alerts" {
+  name                = "Media Alerts"
+  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
+}
+
+resource "newrelic_alert_policy" "server-alerts" {
+  name                = "Server Alerts"
+  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
+}
+
 resource "aws_ssm_parameter" "email" {
   name  = "/global/newrelic/email"
   type  = "SecureString"
