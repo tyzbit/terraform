@@ -69,7 +69,7 @@ resource "newrelic_synthetics_monitor" "cloud" {
 
   uri               = "https://cloud.qtosw.com"
   validation_string = "Nextcloud"
-  verify_ssl        = true
+  verify_ssl        = false
 }
 
 resource "newrelic_synthetics_alert_condition" "cloud" {
@@ -88,7 +88,7 @@ resource "newrelic_synthetics_monitor" "plex" {
 
   uri               = "https://plex.qtosw.com/web/index.html"
   validation_string = "plex"
-  verify_ssl        = true
+  verify_ssl        = false
 }
 
 resource "newrelic_synthetics_alert_condition" "plex" {
@@ -107,7 +107,7 @@ resource "newrelic_synthetics_monitor" "bc" {
 
   uri               = "https://bc.qtosw.com"
   validation_string = "server is up"
-  verify_ssl        = true
+  verify_ssl        = false
 }
 
 resource "newrelic_synthetics_alert_condition" "bc" {
