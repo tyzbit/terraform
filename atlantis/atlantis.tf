@@ -88,7 +88,6 @@ resource "kubernetes_deployment" "atlantis" {
             }
           }
 
-          env {
             name = "ATLANTIS_GH_WEBHOOK_SECRET"
             value_from {
               secret_key_ref {
@@ -167,6 +166,43 @@ resource "kubernetes_service" "atlantis" {
 
     type = "LoadBalancer"
   }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
+  }
+}
+
+resource "kubernetes_ingress" "atlantis" {
+  metadata {
+    name      = "atlantis"
+    namespace = "atlantis"
+    labels    = { app = "atlantis" }
+  }
+  spec {
+    rule {
+      host = local.atlantis_hostname
+      http {
+        path {
+          path = "/*"
+          backend {
+            service_name = "ssl-redirect"
+            service_port = "use-annotation"
+          }
+        }
+        path {
+          path = "/*"
+          backend {
+            service_name = "atlantis"
+            service_port = "4141"
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    kubernetes_service.atlantis
+  ]
 
   lifecycle {
     ignore_changes = [metadata[0].annotations]
