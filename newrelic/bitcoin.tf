@@ -6,7 +6,7 @@ resource "newrelic_alert_policy" "bitcoin-alerts" {
 resource "newrelic_alert_policy_channel" "bitcoin-alerts" {
   policy_id = newrelic_alert_policy.bitcoin-alerts.id
   channel_ids = [
-    newrelic_alert_channel.email-channel.id,
+    #newrelic_alert_channel.email-channel.id,
     newrelic_alert_channel.slack-channel.id
   ]
 }

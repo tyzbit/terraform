@@ -6,7 +6,7 @@ resource "newrelic_alert_policy" "media-alerts" {
 resource "newrelic_alert_policy_channel" "media-alerts" {
   policy_id = newrelic_alert_policy.media-alerts.id
   channel_ids = [
-    newrelic_alert_channel.email-channel.id,
+    #newrelic_alert_channel.email-channel.id,
     newrelic_alert_channel.slack-channel.id
   ]
 }
