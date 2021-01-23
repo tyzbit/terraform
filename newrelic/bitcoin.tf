@@ -1,3 +1,8 @@
+resource "newrelic_alert_policy" "bitcoin-alerts" {
+  name                = "Bitcoin Alerts"
+  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
+}
+
 resource "newrelic_nrql_alert_condition" "foo" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
