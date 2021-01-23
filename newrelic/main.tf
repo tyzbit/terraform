@@ -18,8 +18,8 @@ terraform {
 }
 
 provider "newrelic" {
-  version    = "~> 2.15.0"
-  region     = "US"
+  version = "~> 2.15.0"
+  region  = "US"
 }
 
 provider aws {

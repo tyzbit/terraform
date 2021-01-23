@@ -3,6 +3,14 @@ resource "newrelic_alert_policy" "web-checks" {
   incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
 }
 
+resource "newrelic_alert_policy_channel" "web-alerts" {
+  policy_id = newrelic_alert_policy.web-checks.id
+  channel_ids = [
+    newrelic_alert_channel.email-channel.id,
+    newrelic_alert_channel.slack-channel.id
+  ]
+}
+
 resource "newrelic_synthetics_monitor" "qtosw" {
   name      = "QTOSW"
   type      = "SIMPLE"
@@ -50,7 +58,7 @@ resource "newrelic_synthetics_monitor" "rancher" {
 
   uri               = "https://rancher.qtosw.com"
   validation_string = "Loading"
-  verify_ssl        = true
+  verify_ssl        = false
 }
 
 resource "newrelic_synthetics_alert_condition" "rancher" {
@@ -107,7 +115,7 @@ resource "newrelic_synthetics_monitor" "bc" {
 
   uri               = "https://bc.qtosw.com"
   validation_string = "server is up"
-  verify_ssl        = false
+  verify_ssl        = true
 }
 
 resource "newrelic_synthetics_alert_condition" "bc" {
