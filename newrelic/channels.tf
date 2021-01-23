@@ -1,8 +1,3 @@
-resource "newrelic_alert_policy" "web-checks" {
-  name                = "Web Checks"
-  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
-}
-
 resource "aws_ssm_parameter" "email" {
   name  = "/global/newrelic/email"
   type  = "SecureString"

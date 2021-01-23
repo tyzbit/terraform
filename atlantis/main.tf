@@ -23,7 +23,7 @@ locals {
   root_domain       = "qtosw.com"
 
   repo_config = <<EOF
-{"repos": [{"id": "/.*/","apply_requirements": ["approved","mergeable"],"allowed_overrides": ["workflow"]}]}
+{"repos": [{"id": "/.*/","apply_requirements": ["mergeable"],"allowed_overrides": ["workflow"]}]}
 EOF
 
   env_map = {
