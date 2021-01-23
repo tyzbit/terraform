@@ -50,7 +50,7 @@ resource "newrelic_synthetics_monitor" "rancher" {
 
   uri               = "https://rancher.qtosw.com"
   validation_string = "Loading"
-  verify_ssl        = true
+  verify_ssl        = false
 }
 
 resource "newrelic_synthetics_alert_condition" "rancher" {
@@ -107,7 +107,7 @@ resource "newrelic_synthetics_monitor" "bc" {
 
   uri               = "https://bc.qtosw.com"
   validation_string = "server is up"
-  verify_ssl        = false
+  verify_ssl        = true
 }
 
 resource "newrelic_synthetics_alert_condition" "bc" {
