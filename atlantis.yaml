@@ -3,3 +3,4 @@ projects:
 - dir: newrelic
   autoplan:
     enabled: true
+  apply_requirements: []
