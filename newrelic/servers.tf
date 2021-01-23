@@ -122,7 +122,7 @@ resource "newrelic_nrql_alert_condition" "local-ip-change" {
   fill_option = "none"
 
   aggregation_window             = 60
-  expiration_duration            = 120
+  expiration_duration            = 3600
   open_violation_on_expiration   = true
   close_violations_on_expiration = false
 
@@ -139,7 +139,7 @@ resource "newrelic_nrql_alert_condition" "local-ip-change" {
   critical {
     operator              = "equals"
     threshold             = 0
-    threshold_duration    = 1800
+    threshold_duration    = 3600
     threshold_occurrences = "ALL"
   }
 }
