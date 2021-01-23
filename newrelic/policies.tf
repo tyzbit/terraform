@@ -21,7 +21,7 @@ resource "newrelic_alert_policy" "server-alerts" {
 resource "aws_ssm_parameter" "email" {
   name  = "/global/newrelic/email"
   type  = "SecureString"
-  value = ""
+  value = "fakevalue"
 
   lifecycle {
     ignore_changes = [value]
@@ -41,7 +41,7 @@ resource "newrelic_alert_channel" "email-channel" {
 resource "aws_ssm_parameter" "slack-channel" {
   name  = "/global/newrelic/slack-channel"
   type  = "SecureString"
-  value = ""
+  value = "fakevalue"
 
   lifecycle {
     ignore_changes = [value]
