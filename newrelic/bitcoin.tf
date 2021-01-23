@@ -4,7 +4,7 @@ resource "newrelic_alert_policy" "bitcoin-alerts" {
 }
 
 resource "newrelic_alert_policy_channel" "bitcoin-alerts" {
-  policy_id  = newrelic_alert_policy.bitcoin-alerts.id
+  policy_id = newrelic_alert_policy.bitcoin-alerts.id
   channel_ids = [
     newrelic_alert_channel.email-channel.id,
     newrelic_alert_channel.slack-channel.id
@@ -20,7 +20,7 @@ resource "newrelic_nrql_alert_condition" "electrumx-not-running" {
   violation_time_limit_seconds = 3600
   value_function               = "single_value"
 
-  fill_option          = "none"
+  fill_option = "none"
 
   aggregation_window             = 60
   expiration_duration            = 120
@@ -54,7 +54,7 @@ resource "newrelic_nrql_alert_condition" "bitcoin-not-running" {
   violation_time_limit_seconds = 3600
   value_function               = "single_value"
 
-  fill_option          = "none"
+  fill_option = "none"
 
   aggregation_window             = 60
   expiration_duration            = 120
