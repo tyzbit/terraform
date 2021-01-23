@@ -3,7 +3,15 @@ resource "newrelic_alert_policy" "bitcoin-alerts" {
   incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
 }
 
-resource "newrelic_nrql_alert_condition" "foo" {
+resource "newrelic_alert_policy_channel" "foo" {
+  policy_id  = newrelic_alert_policy.bitcoin-alerts.id
+  channel_ids = [
+    newrelic_alert_channel.email-channel.id,
+    newrelic_alert_channel.slack-channel.id
+  ]
+}
+
+resource "newrelic_nrql_alert_condition" "electrumx-not-running" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
   type                         = "static"
@@ -30,8 +38,42 @@ resource "newrelic_nrql_alert_condition" "foo" {
   }
 
   critical {
-    operator              = "below"
-    threshold             = 5.5
+    operator              = "equals"
+    threshold             = 0
+    threshold_duration    = 300
+    threshold_occurrences = "ALL"
+  }
+}
+
+resource "newrelic_nrql_alert_condition" "bitcoin-not-running" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
+  type                         = "static"
+  name                         = "Bitcoin is not running"
+  enabled                      = true
+  violation_time_limit_seconds = 3600
+  value_function               = "single_value"
+
+  fill_option          = "none"
+
+  aggregation_window             = 60
+  expiration_duration            = 120
+  open_violation_on_expiration   = false
+  close_violations_on_expiration = false
+
+  nrql {
+    query             = <<EOF
+      FROM K8sContainerSample,ContainerSample
+      SELECT uniqueCount(entityName)
+      WHERE (entityName LIKE '%bitcoin%') OR (containerName LIKE '%bitcoin%')
+      FACET hostname
+      EOF
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "equals"
+    threshold             = 0
     threshold_duration    = 300
     threshold_occurrences = "ALL"
   }
