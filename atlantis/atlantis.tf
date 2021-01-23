@@ -173,43 +173,6 @@ resource "kubernetes_service" "atlantis" {
   }
 }
 
-resource "kubernetes_ingress" "atlantis" {
-  metadata {
-    name      = "atlantis"
-    namespace = "atlantis"
-    labels    = { app = "atlantis" }
-  }
-  spec {
-    rule {
-      host = local.atlantis_hostname
-      http {
-        path {
-          path = "/*"
-          backend {
-            service_name = "ssl-redirect"
-            service_port = "use-annotation"
-          }
-        }
-        path {
-          path = "/*"
-          backend {
-            service_name = "atlantis"
-            service_port = "4141"
-          }
-        }
-      }
-    }
-  }
-
-  depends_on = [
-    kubernetes_service.atlantis
-  ]
-
-  lifecycle {
-    ignore_changes = [metadata[0].annotations]
-  }
-}
-
 resource "kubernetes_service_account" "atlantis" {
   automount_service_account_token = true
   metadata {
