@@ -316,3 +316,36 @@ resource "newrelic_nrql_alert_condition" "plex-not-running" {
     threshold_occurrences = "ALL"
   }
 }
+
+resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.media-alerts.id
+  type                         = "static"
+  name                         = "RARs found in Downloads folder"
+  enabled                      = true
+  violation_time_limit_seconds = 3600
+  value_function               = "single_value"
+
+  fill_option = "none"
+
+  aggregation_window             = 60
+  expiration_duration            = 120
+  open_violation_on_expiration   = false
+  close_violations_on_expiration = false
+
+  nrql {
+    query             = <<EOF
+      FROM Log
+      SELECT latest(files_found)
+      WHERE job_comment = 'Count RARs in downloads folder'
+      EOF
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "above"
+    threshold             = 0
+    threshold_duration    = 300
+    threshold_occurrences = "ALL"
+  }
+}
