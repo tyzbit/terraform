@@ -29,7 +29,7 @@ resource "kubernetes_deployment" "atlantis" {
           args = [
             "server",
             "--gh-app-id",
-            "97251",
+            "97394",
             "--gh-app-key-file",
             "/etc/gh/atlantis-app-key",
             "--write-git-creds"
@@ -70,6 +70,24 @@ resource "kubernetes_deployment" "atlantis" {
           }
 
           env {
+            name = "NEW_RELIC_ACCOUNT_ID"
+            value_from {
+              secret_key_ref {
+                name = "terraform-newrelic-keys"
+                key  = "NEW_RELIC_ACCOUNT_ID"
+              }
+            }
+          }
+          env {
+            name = "NEW_RELIC_API_KEY"
+            value_from {
+              secret_key_ref {
+                name = "terraform-newrelic-keys"
+                key  = "NEW_RELIC_API_KEY"
+              }
+            }
+          }
+
             name = "ATLANTIS_GH_WEBHOOK_SECRET"
             value_from {
               secret_key_ref {
@@ -125,7 +143,10 @@ resource "kubernetes_namespace" "atlantis" {
   }
 
   lifecycle {
-    ignore_changes = [metadata[0].annotations]
+    ignore_changes = [
+      metadata[0].annotations,
+      metadata[0].labels
+    ]
   }
 }
 
@@ -232,8 +253,12 @@ resource "kubernetes_secret" "gh-webhook" {
   }
 
   data = {
-    "app-id"         = "97251"
+    "app-id"         = "97394"
     "webhook-secret" = aws_ssm_parameter.gh-webhook.value
+  }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
   }
 }
 
@@ -257,5 +282,9 @@ resource "kubernetes_secret" "gh-app-key" {
 
   data = {
     "atlantis-app-key" = aws_ssm_parameter.gh-app-key.value
+  }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
   }
 }
