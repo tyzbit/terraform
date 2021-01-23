@@ -2,4 +2,4 @@ version: 3
 projects:
 - dir: newrelic
   autoplan:
-    enabled: false
+    enabled: true
