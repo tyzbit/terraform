@@ -109,3 +109,37 @@ resource "newrelic_nrql_alert_condition" "high-cpu-usage" {
     threshold_occurrences = "ALL"
   }
 }
+
+resource "newrelic_nrql_alert_condition" "local-ip-change" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.server-alerts.id
+  type                         = "static"
+  name                         = "Local IP has changed"
+  enabled                      = true
+  violation_time_limit_seconds = 3600
+  value_function               = "single_value"
+
+  fill_option = "none"
+
+  aggregation_window             = 60
+  expiration_duration            = 120
+  open_violation_on_expiration   = true
+  close_violations_on_expiration = false
+
+  nrql {
+    query             = <<EOF
+      FROM Log
+      SELECT count(*)
+      WHERE job_comment = 'Check my IP'
+      FACET ip  
+      EOF
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "equals"
+    threshold             = 0
+    threshold_duration    = 1800
+    threshold_occurrences = "ALL"
+  }
+}
