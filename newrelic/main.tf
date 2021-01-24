@@ -11,7 +11,7 @@ terraform {
 
   backend "s3" {
     bucket         = "tyzbit.terraform"
-    key            = "synthetics.tfstate"
+    key            = "newrelic.tfstate"
     region         = "us-east-1"
     dynamodb_table = "tf-locking-table"
   }
