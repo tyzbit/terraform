@@ -17,30 +17,26 @@ resource "newrelic_nrql_alert_condition" "high-disk-usage" {
   type                         = "static"
   name                         = "Disk usage is high"
   enabled                      = true
-  violation_time_limit_seconds = 3600
-  value_function               = "single_value"
+  violation_time_limit_seconds = var.nrql-system-metric-average.violation_time_limit_seconds
+  value_function               = var.nrql-system-metric-average.value_function
 
-  fill_option = "none"
+  fill_option = var.nrql-system-metric-average.fill_option
 
-  aggregation_window             = 60
-  expiration_duration            = 120
-  open_violation_on_expiration   = false
-  close_violations_on_expiration = false
+  aggregation_window             = var.nrql-system-metric-average.aggregation_window
+  expiration_duration            = var.nrql-system-metric-average.expiration_duration
+  open_violation_on_expiration   = var.nrql-system-metric-average.open_violation_on_expiration
+  close_violations_on_expiration = var.nrql-system-metric-average.close_violations_on_expiration
 
   nrql {
-    query             = <<EOF
-      FROM StorageSample
-      SELECT average(diskUsedPercent)
-      FACET hostname,mountPoint 
-      EOF
-    evaluation_offset = 3
+    query             = replace(var.nrql-system-metric-average.query, "metric", "diskUsedPercent")
+    evaluation_offset = var.nrql-system-metric-average.evaluation_offset
   }
 
   critical {
-    operator              = "above"
-    threshold             = 90
-    threshold_duration    = 300
-    threshold_occurrences = "ALL"
+    operator              = var.nrql-system-metric-average.operator
+    threshold             = var.nrql-system-metric-average.threshold
+    threshold_duration    = var.nrql-system-metric-average.threshold_duration
+    threshold_occurrences = var.nrql-system-metric-average.threshold_occurrences
   }
 }
 
@@ -50,26 +46,26 @@ resource "newrelic_nrql_alert_condition" "high-memory-usage" {
   type                         = "static"
   name                         = "Memory usage is high"
   enabled                      = true
-  violation_time_limit_seconds = 3600
-  value_function               = "single_value"
+  violation_time_limit_seconds = var.nrql-system-metric-average.violation_time_limit_seconds
+  value_function               = var.nrql-system-metric-average.value_function
 
-  fill_option = "none"
+  fill_option = var.nrql-system-metric-average.fill_option
 
-  aggregation_window             = 60
-  expiration_duration            = 120
-  open_violation_on_expiration   = false
-  close_violations_on_expiration = false
+  aggregation_window             = var.nrql-system-metric-average.aggregation_window
+  expiration_duration            = var.nrql-system-metric-average.expiration_duration
+  open_violation_on_expiration   = var.nrql-system-metric-average.open_violation_on_expiration
+  close_violations_on_expiration = var.nrql-system-metric-average.close_violations_on_expiration
 
   nrql {
-    query             = replace(var.nrql-system-metric-average, "metric", "memoryUsedPercent")
+    query             = replace(var.nrql-system-metric-average.query, "metric", "memoryUsedPercent")
     evaluation_offset = 3
   }
 
   critical {
-    operator              = "above"
-    threshold             = 90
-    threshold_duration    = 900
-    threshold_occurrences = "ALL"
+    operator              = var.nrql-system-metric-average.operator
+    threshold             = var.nrql-system-metric-average.threshold
+    threshold_duration    = var.nrql-system-metric-average.threshold_duration
+    threshold_occurrences = var.nrql-system-metric-average.threshold_occurrences
   }
 }
 
@@ -79,26 +75,26 @@ resource "newrelic_nrql_alert_condition" "high-cpu-usage" {
   type                         = "static"
   name                         = "CPU pegged above 90"
   enabled                      = true
-  violation_time_limit_seconds = 3600
-  value_function               = "single_value"
+  violation_time_limit_seconds = var.nrql-system-metric-average.violation_time_limit_seconds
+  value_function               = var.nrql-system-metric-average.value_function
 
-  fill_option = "none"
+  fill_option = var.nrql-system-metric-average.fill_option
 
-  aggregation_window             = 60
-  expiration_duration            = 120
-  open_violation_on_expiration   = false
-  close_violations_on_expiration = false
+  aggregation_window             = var.nrql-system-metric-average.aggregation_window
+  expiration_duration            = var.nrql-system-metric-average.expiration_duration
+  open_violation_on_expiration   = var.nrql-system-metric-average.open_violation_on_expiration
+  close_violations_on_expiration = var.nrql-system-metric-average.close_violations_on_expiration
 
   nrql {
-    query             = replace(var.nrql-system-metric-average, "metric", "cpuPercent")
+    query             = replace(var.nrql-system-metric-average.query, "metric", "cpuPercent")
     evaluation_offset = 3
   }
 
   critical {
-    operator              = "above"
-    threshold             = 90
-    threshold_duration    = 1800
-    threshold_occurrences = "ALL"
+    operator              = var.nrql-system-metric-average.operator
+    threshold             = var.nrql-system-metric-average.threshold
+    threshold_duration    = var.nrql-system-metric-average.threshold_duration
+    threshold_occurrences = var.nrql-system-metric-average.threshold_occurrences
   }
 }
 
