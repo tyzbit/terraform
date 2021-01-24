@@ -3,7 +3,7 @@ variable "nrql-container-not-running" {
     aggregation_window             = 60
     close_violations_on_expiration = false
     evaluation_offset              = 3
-    expiration_duration            = 120
+    expiration_duration            = 300
     fill_option                    = "none"
     open_violation_on_expiration   = true
     operator                       = "equals"
@@ -28,7 +28,7 @@ variable "nrql-vm-not-running" {
     aggregation_window             = 60
     close_violations_on_expiration = false
     evaluation_offset              = 3
-    expiration_duration            = 120
+    expiration_duration            = 300
     fill_option                    = "none"
     open_violation_on_expiration   = true
     operator                       = "equals"
