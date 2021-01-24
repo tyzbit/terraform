@@ -23,6 +23,29 @@ variable "nrql-container-not-running" {
   }
 }
 
+variable "nrql-vm-not-running" {
+  default = {
+    aggregation_window             = 60
+    close_violations_on_expiration = false
+    evaluation_offset              = 3
+    expiration_duration            = 120
+    fill_option                    = "none"
+    open_violation_on_expiration   = true
+    operator                       = "equals"
+    query                          = <<EOF
+      FROM Log
+      SELECT uniqueCount(running_vms)
+      WHERE (running_vms LIKE '%vm-name%')
+      FACET hostname
+    EOF
+    threshold                      = 0
+    threshold_duration             = 300
+    threshold_occurrences          = "ALL"
+    value_function                 = "single_value"
+    violation_time_limit_seconds   = 3600
+  }
+}
+
 variable "nrql-system-metric-average" {
   default = {
     aggregation_window             = 60

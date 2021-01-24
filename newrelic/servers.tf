@@ -98,6 +98,64 @@ resource "newrelic_nrql_alert_condition" "high-cpu-usage" {
   }
 }
 
+resource "newrelic_nrql_alert_condition" "keymaster-not-running" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.server-alerts.id
+  type                         = "static"
+  name                         = "Keymaster not running"
+  enabled                      = true
+  violation_time_limit_seconds = var.nrql-vm-not-running.violation_time_limit_seconds
+  value_function               = var.nrql-vm-not-running.value_function
+
+  fill_option = var.nrql-vm-not-running.fill_option
+
+  aggregation_window             = var.nrql-vm-not-running.aggregation_window
+  expiration_duration            = var.nrql-vm-not-running.expiration_duration
+  open_violation_on_expiration   = var.nrql-vm-not-running.open_violation_on_expiration
+  close_violations_on_expiration = var.nrql-vm-not-running.close_violations_on_expiration
+
+  nrql {
+    query             = replace(var.nrql-vm-not-running.query, "vm-name", "keymaster")
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = var.nrql-vm-not-running.operator
+    threshold             = var.nrql-vm-not-running.threshold
+    threshold_duration    = var.nrql-vm-not-running.threshold_duration
+    threshold_occurrences = var.nrql-vm-not-running.threshold_occurrences
+  }
+}
+
+resource "newrelic_nrql_alert_condition" "foreman-not-running" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.server-alerts.id
+  type                         = "static"
+  name                         = "Foreman not running"
+  enabled                      = true
+  violation_time_limit_seconds = var.nrql-vm-not-running.violation_time_limit_seconds
+  value_function               = var.nrql-vm-not-running.value_function
+
+  fill_option = var.nrql-vm-not-running.fill_option
+
+  aggregation_window             = var.nrql-vm-not-running.aggregation_window
+  expiration_duration            = var.nrql-vm-not-running.expiration_duration
+  open_violation_on_expiration   = var.nrql-vm-not-running.open_violation_on_expiration
+  close_violations_on_expiration = var.nrql-vm-not-running.close_violations_on_expiration
+
+  nrql {
+    query             = replace(var.nrql-vm-not-running.query, "vm-name", "foreman")
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = var.nrql-vm-not-running.operator
+    threshold             = var.nrql-vm-not-running.threshold
+    threshold_duration    = var.nrql-vm-not-running.threshold_duration
+    threshold_occurrences = var.nrql-vm-not-running.threshold_occurrences
+  }
+}
+
 resource "newrelic_nrql_alert_condition" "local-ip-change" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.server-alerts.id
