@@ -28,12 +28,7 @@ resource "newrelic_nrql_alert_condition" "electrumx-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM K8sContainerSample,ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE (entityName LIKE '%electrumx%') OR (containerName LIKE '%electrumx%')
-      FACET hostname
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "electrumx")
     evaluation_offset = 3
   }
 
@@ -62,12 +57,7 @@ resource "newrelic_nrql_alert_condition" "bitcoin-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM K8sContainerSample,ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE (entityName LIKE '%bitcoin%') OR (containerName LIKE '%bitcoin%')
-      FACET hostname
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "bitcoin")
     evaluation_offset = 3
   }
 

@@ -28,12 +28,7 @@ resource "newrelic_nrql_alert_condition" "nginx-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'Nginx'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "Nginx")
     evaluation_offset = 3
   }
 
@@ -96,12 +91,7 @@ resource "newrelic_nrql_alert_condition" "nextclouddb-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'NextCloudDB'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "NextCloudDB")
     evaluation_offset = 3
   }
 
@@ -130,12 +120,7 @@ resource "newrelic_nrql_alert_condition" "nextcloud-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'NextCloud'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "NextCloud")
     evaluation_offset = 3
   }
 
@@ -164,12 +149,7 @@ resource "newrelic_nrql_alert_condition" "motioneye-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'motioneye'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "motioneye")
     evaluation_offset = 3
   }
 
@@ -198,12 +178,7 @@ resource "newrelic_nrql_alert_condition" "motion-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'motion'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "motion")
     evaluation_offset = 3
   }
 
@@ -232,12 +207,7 @@ resource "newrelic_nrql_alert_condition" "sickchill-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'SickChill'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "SickChill")
     evaluation_offset = 3
   }
 
@@ -266,12 +236,7 @@ resource "newrelic_nrql_alert_condition" "deluge-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE entityName LIKE 'Deluge'
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "Deluge")
     evaluation_offset = 3
   }
 
@@ -300,12 +265,7 @@ resource "newrelic_nrql_alert_condition" "plex-not-running" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM K8sContainerSample,ContainerSample
-      SELECT uniqueCount(entityName)
-      WHERE (entityName LIKE '%plex%' OR containerName LIKE '%plex%')
-      FACET host 
-      EOF
+    query             = replace(var.nrql-container-not-running, "nrql-container-name", "plex")
     evaluation_offset = 3
   }
 

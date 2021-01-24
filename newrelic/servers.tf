@@ -61,11 +61,7 @@ resource "newrelic_nrql_alert_condition" "high-memory-usage" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM SystemSample
-      SELECT average(memoryUsedPercent)
-      FACET hostname
-      EOF
+    query             = replace(var.nrql-system-metric-average, "metric", "memoryUsedPercent")
     evaluation_offset = 3
   }
 
@@ -94,11 +90,7 @@ resource "newrelic_nrql_alert_condition" "high-cpu-usage" {
   close_violations_on_expiration = false
 
   nrql {
-    query             = <<EOF
-      FROM SystemSample
-      SELECT average(cpuPercent)
-      FACET hostname 
-      EOF
+    query             = replace(var.nrql-system-metric-average, "metric", "cpuPercent")
     evaluation_offset = 3
   }
 
