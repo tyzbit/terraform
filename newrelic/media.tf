@@ -307,6 +307,6 @@ resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
     operator              = "above"
     threshold             = var.nrql-container-not-running.threshold
     threshold_duration    = 60
-    threshold_occurrences = "ALL"
+    threshold_occurrences = "at_least_once"
   }
 }
