@@ -3,3 +3,6 @@ projects:
 - dir: newrelic
   autoplan:
     enabled: true
+- dir: pagerduty
+  autoplan:
+    enabled: true
