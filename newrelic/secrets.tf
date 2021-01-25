@@ -3,5 +3,5 @@ data "aws_ssm_parameter" "account-id" {
 }
 
 data "aws_ssm_parameter" "pagerduty-key" {
-  name = "/global/pagerduty/integration-key"
+  name = "/global/pagerduty/default-route-integration-key"
 }
