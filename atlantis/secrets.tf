@@ -77,3 +77,30 @@ resource "kubernetes_secret" "terraform-newrelic-keys" {
     ignore_changes = [metadata[0].annotations]
   }
 }
+
+resource "aws_ssm_parameter" "pagerduty-token" {
+  name  = "/global/atlantis/pagerduty-token"
+  type  = "SecureString"
+  value = ""
+
+  tags = local.default_tags
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "kubernetes_secret" "pagerduty-token" {
+  metadata {
+    name      = "terraform-pagerduty-token"
+    namespace = "atlantis"
+  }
+
+  data = {
+    "PAGERDUTY_TOKEN" = aws_ssm_parameter.pagerduty-token.value
+  }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations]
+  }
+}

@@ -7,6 +7,7 @@ resource "newrelic_alert_policy_channel" "media-alerts" {
   policy_id = newrelic_alert_policy.media-alerts.id
   channel_ids = [
     #newrelic_alert_channel.email-channel.id,
+    newrelic_alert_channel.pagerduty.id,
     newrelic_alert_channel.slack-channel.id
   ]
 }
@@ -283,7 +284,7 @@ resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
   type                         = "static"
   name                         = "RARs found in Downloads folder"
   enabled                      = true
-  violation_time_limit_seconds = 3600
+  violation_time_limit_seconds = 604800
   value_function               = "single_value"
 
   fill_option = "none"
@@ -305,7 +306,7 @@ resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
   critical {
     operator              = "above"
     threshold             = var.nrql-container-not-running.threshold
-    threshold_duration    = 300
+    threshold_duration    = 60
     threshold_occurrences = "ALL"
   }
 }

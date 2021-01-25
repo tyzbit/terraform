@@ -78,12 +78,23 @@ resource "kubernetes_deployment" "atlantis" {
               }
             }
           }
+
           env {
             name = "NEW_RELIC_API_KEY"
             value_from {
               secret_key_ref {
                 name = "terraform-newrelic-keys"
                 key  = "NEW_RELIC_API_KEY"
+              }
+            }
+          }
+
+          env {
+            name = "PAGERDUTY_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = "terraform-pagerduty-token"
+                key  = "PAGERDUTY_TOKEN"
               }
             }
           }

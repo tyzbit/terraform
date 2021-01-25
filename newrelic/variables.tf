@@ -19,7 +19,7 @@ variable "nrql-container-not-running" {
     threshold_duration             = 300
     threshold_occurrences          = "ALL"
     value_function                 = "single_value"
-    violation_time_limit_seconds   = 3600
+    violation_time_limit_seconds   = 604800
   }
 }
 
@@ -42,7 +42,7 @@ variable "nrql-vm-not-running" {
     threshold_duration             = 300
     threshold_occurrences          = "ALL"
     value_function                 = "single_value"
-    violation_time_limit_seconds   = 3600
+    violation_time_limit_seconds   = 604800
   }
 }
 
@@ -64,6 +64,6 @@ variable "nrql-system-metric-average" {
     threshold_duration             = 300
     threshold_occurrences          = "ALL"
     value_function                 = "single_value"
-    violation_time_limit_seconds   = 3600
+    violation_time_limit_seconds   = 604800
   }
 }

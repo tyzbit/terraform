@@ -7,6 +7,7 @@ resource "newrelic_alert_policy_channel" "web-alerts" {
   policy_id = newrelic_alert_policy.web-checks.id
   channel_ids = [
     #newrelic_alert_channel.email-channel.id,
+    newrelic_alert_channel.pagerduty.id,
     newrelic_alert_channel.slack-channel.id
   ]
 }

@@ -38,6 +38,15 @@ resource "newrelic_alert_channel" "slack-channel" {
   }
 }
 
+resource "newrelic_alert_channel" "pagerduty" {
+  name = "Pagerduty"
+  type = "pagerduty"
+
+  config {
+    service_key = data.aws_ssm_parameter.pagerduty-key.value
+  }
+}
+
 # Applies the created channels above to the alert policy
 # referenced at the top of the config.
 resource "newrelic_alert_policy_channel" "send-web-checks-to-slack" {
