@@ -190,3 +190,37 @@ resource "newrelic_nrql_alert_condition" "local-ip-change" {
     threshold_occurrences = "ALL"
   }
 }
+
+resource "newrelic_nrql_alert_condition" "pizero-ssh" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.server-alerts.id
+  type                         = "static"
+  name                         = "Pizero SSH not open"
+  enabled                      = true
+  violation_time_limit_seconds = 604800
+  value_function               = "single_value"
+
+  fill_option = "none"
+
+  aggregation_window             = 60
+  expiration_duration            = 900
+  open_violation_on_expiration   = false
+  close_violations_on_expiration = false
+
+  nrql {
+    query             = <<EOF
+      FROM Log
+      SELECT count(*)
+      WHERE job_comment = 'Check that pizero SSH is open'
+        AND port_open = 'true'
+      EOF
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "equals"
+    threshold             = 0
+    threshold_duration    = 300
+    threshold_occurrences = "ALL"
+  }
+}
