@@ -12,148 +12,41 @@ resource "newrelic_alert_policy_channel" "server-alerts" {
   ]
 }
 
-resource "newrelic_nrql_alert_condition" "high-disk-usage" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "Disk usage is high"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-system-metric-average.violation_time_limit_seconds
-  value_function               = var.nrql-system-metric-average.value_function
+module "system-metrics-above-90" {
+  source     = "./modules/nrql-system-metric-nominal"
+  account_id = data.aws_ssm_parameter.account-id.value
+  policy_id  = newrelic_alert_policy.server-alerts.id
 
-  fill_option = var.nrql-system-metric-average.fill_option
-
-  aggregation_window             = var.nrql-system-metric-average.aggregation_window
-  expiration_duration            = var.nrql-system-metric-average.expiration_duration
-  open_violation_on_expiration   = var.nrql-system-metric-average.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-system-metric-average.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-system-metric-average.query, "metric", "diskUsedPercent")
-    evaluation_offset = var.nrql-system-metric-average.evaluation_offset
+  for_each = {
+    diskUsedPercent   = { enabled = true, pretty_name = "Disk" }
+    memoryUsedPercent = { enabled = true, pretty_name = "Memory" }
+    cpuUsedPercent    = { enabled = true, pretty_name = "CPU" }
   }
 
-  critical {
-    operator              = var.nrql-system-metric-average.operator
-    threshold             = var.nrql-system-metric-average.threshold
-    threshold_duration    = var.nrql-system-metric-average.threshold_duration
-    threshold_occurrences = var.nrql-system-metric-average.threshold_occurrences
-  }
+  name    = "${each.value.pretty_name} is high"
+  enabled = each.value.enabled
+
+  metric    = each.key
+  operator  = "above"
+  threshold = 90
 }
 
-resource "newrelic_nrql_alert_condition" "high-memory-usage" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "Memory usage is high"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-system-metric-average.violation_time_limit_seconds
-  value_function               = var.nrql-system-metric-average.value_function
+module "server-vms-not-running" {
+  source     = "./modules/nrql-vm-running"
+  account_id = data.aws_ssm_parameter.account-id.value
+  policy_id  = newrelic_alert_policy.server-alerts.id
 
-  fill_option = var.nrql-system-metric-average.fill_option
-
-  aggregation_window             = var.nrql-system-metric-average.aggregation_window
-  expiration_duration            = var.nrql-system-metric-average.expiration_duration
-  open_violation_on_expiration   = var.nrql-system-metric-average.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-system-metric-average.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-system-metric-average.query, "metric", "memoryUsedPercent")
-    evaluation_offset = 3
+  for_each = {
+    foreman   = { enabled = true }
+    keymaster = { enabled = true }
   }
 
-  critical {
-    operator              = var.nrql-system-metric-average.operator
-    threshold             = var.nrql-system-metric-average.threshold
-    threshold_duration    = var.nrql-system-metric-average.threshold_duration
-    threshold_occurrences = var.nrql-system-metric-average.threshold_occurrences
-  }
-}
+  name    = "${each.key} is not running"
+  enabled = each.value.enabled
 
-resource "newrelic_nrql_alert_condition" "high-cpu-usage" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "CPU pegged above 90"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-system-metric-average.violation_time_limit_seconds
-  value_function               = var.nrql-system-metric-average.value_function
-
-  fill_option = var.nrql-system-metric-average.fill_option
-
-  aggregation_window             = var.nrql-system-metric-average.aggregation_window
-  expiration_duration            = var.nrql-system-metric-average.expiration_duration
-  open_violation_on_expiration   = var.nrql-system-metric-average.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-system-metric-average.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-system-metric-average.query, "metric", "cpuPercent")
-    evaluation_offset = 3
-  }
-
-  critical {
-    operator              = var.nrql-system-metric-average.operator
-    threshold             = var.nrql-system-metric-average.threshold
-    threshold_duration    = var.nrql-system-metric-average.threshold_duration
-    threshold_occurrences = var.nrql-system-metric-average.threshold_occurrences
-  }
-}
-
-resource "newrelic_nrql_alert_condition" "keymaster-not-running" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "Keymaster not running"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-vm-not-running.violation_time_limit_seconds
-  value_function               = var.nrql-vm-not-running.value_function
-
-  fill_option = var.nrql-vm-not-running.fill_option
-
-  aggregation_window             = var.nrql-vm-not-running.aggregation_window
-  expiration_duration            = var.nrql-vm-not-running.expiration_duration
-  open_violation_on_expiration   = var.nrql-vm-not-running.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-vm-not-running.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-vm-not-running.query, "vm-name", "keymaster")
-    evaluation_offset = 3
-  }
-
-  critical {
-    operator              = var.nrql-vm-not-running.operator
-    threshold             = var.nrql-vm-not-running.threshold
-    threshold_duration    = var.nrql-vm-not-running.threshold_duration
-    threshold_occurrences = var.nrql-vm-not-running.threshold_occurrences
-  }
-}
-
-resource "newrelic_nrql_alert_condition" "foreman-not-running" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "Foreman not running"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-vm-not-running.violation_time_limit_seconds
-  value_function               = var.nrql-vm-not-running.value_function
-
-  fill_option = var.nrql-vm-not-running.fill_option
-
-  aggregation_window             = var.nrql-vm-not-running.aggregation_window
-  expiration_duration            = var.nrql-vm-not-running.expiration_duration
-  open_violation_on_expiration   = var.nrql-vm-not-running.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-vm-not-running.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-vm-not-running.query, "vm-name", "foreman")
-    evaluation_offset = 3
-  }
-
-  critical {
-    operator              = var.nrql-vm-not-running.operator
-    threshold             = var.nrql-vm-not-running.threshold
-    threshold_duration    = var.nrql-vm-not-running.threshold_duration
-    threshold_occurrences = var.nrql-vm-not-running.threshold_occurrences
+  vm_name = each.key
+  providers = {
+    newrelic = newrelic
   }
 }
 
@@ -191,36 +84,19 @@ resource "newrelic_nrql_alert_condition" "local-ip-change" {
   }
 }
 
-resource "newrelic_nrql_alert_condition" "pizero-ssh" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "Pizero SSH not open"
-  enabled                      = true
-  violation_time_limit_seconds = 604800
-  value_function               = "single_value"
 
-  fill_option = "none"
+module "server-port-checks" {
+  source     = "./modules/nrql-port-open"
+  account_id = data.aws_ssm_parameter.account-id.value
+  policy_id  = newrelic_alert_policy.server-alerts.id
 
-  aggregation_window             = 60
-  expiration_duration            = 900
-  open_violation_on_expiration   = false
-  close_violations_on_expiration = false
-
-  nrql {
-    query             = <<EOF
-      FROM Log
-      SELECT count(*)
-      WHERE job_comment = 'Check that pizero SSH is open'
-        AND port_open = 'true'
-      EOF
-    evaluation_offset = 3
+  for_each = {
+    pizero = { enabled = true, job_comment = "Check that pizero SSH is open" },
+    qtosw  = { enabled = true, job_comment = "Check that qtosw vpn is open" },
   }
 
-  critical {
-    operator              = "equals"
-    threshold             = 0
-    threshold_duration    = 300
-    threshold_occurrences = "ALL"
-  }
+  name    = "${each.value.job_comment} failed"
+  enabled = each.value.enabled
+
+  job_comment = each.value.job_comment
 }

@@ -12,118 +12,23 @@ resource "newrelic_alert_policy_channel" "bitcoin-alerts" {
   ]
 }
 
-resource "newrelic_nrql_alert_condition" "electrumx-not-running" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
-  type                         = "static"
-  name                         = "Electrumx is not running"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-container-not-running.violation_time_limit_seconds
-  value_function               = var.nrql-container-not-running.value_function
+module "bitcoin-containers-not-running" {
+  source     = "./modules/nrql-container-running"
+  account_id = data.aws_ssm_parameter.account-id.value
+  policy_id  = newrelic_alert_policy.server-alerts.id
 
-  fill_option = var.nrql-container-not-running.fill_option
-
-  aggregation_window             = var.nrql-container-not-running.aggregation_window
-  expiration_duration            = var.nrql-container-not-running.expiration_duration
-  open_violation_on_expiration   = var.nrql-container-not-running.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-container-not-running.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-container-not-running.query, "nrql-container-name", "electrumx")
-    evaluation_offset = var.nrql-container-not-running.evaluation_offset
+  for_each = {
+    electrumx              = { enabled = true, pretty_name = "Electrumx" }
+    bitcoin                = { enabled = true, pretty_name = "Bitcoin" }
+    btc-rpc-explorer       = { enabled = true, pretty_name = "BTC-RPC-Explorer" }
+    btc-rpc-explorer-cache = { enabled = true, pretty_name = "Electrumx" }
   }
 
-  critical {
-    operator              = var.nrql-container-not-running.operator
-    threshold             = var.nrql-container-not-running.threshold
-    threshold_duration    = var.nrql-container-not-running.threshold_duration
-    threshold_occurrences = var.nrql-container-not-running.threshold_occurrences
-  }
-}
+  name    = "${each.value.pretty_name} is not running"
+  enabled = each.value.enabled
 
-resource "newrelic_nrql_alert_condition" "bitcoin-not-running" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
-  type                         = "static"
-  name                         = "Bitcoin is not running"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-container-not-running.violation_time_limit_seconds
-  value_function               = var.nrql-container-not-running.value_function
-
-  fill_option = var.nrql-container-not-running.fill_option
-
-  aggregation_window             = var.nrql-container-not-running.aggregation_window
-  expiration_duration            = var.nrql-container-not-running.expiration_duration
-  open_violation_on_expiration   = var.nrql-container-not-running.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-container-not-running.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-container-not-running.query, "nrql-container-name", "bitcoin")
-    evaluation_offset = 3
-  }
-
-  critical {
-    operator              = var.nrql-container-not-running.operator
-    threshold             = var.nrql-container-not-running.threshold
-    threshold_duration    = var.nrql-container-not-running.threshold_duration
-    threshold_occurrences = var.nrql-container-not-running.threshold_occurrences
-  }
-}
-
-resource "newrelic_nrql_alert_condition" "btc-rpc-explorer-not-running" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
-  type                         = "static"
-  name                         = "BTC-RPC-Explorer is not running"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-container-not-running.violation_time_limit_seconds
-  value_function               = var.nrql-container-not-running.value_function
-
-  fill_option = var.nrql-container-not-running.fill_option
-
-  aggregation_window             = var.nrql-container-not-running.aggregation_window
-  expiration_duration            = var.nrql-container-not-running.expiration_duration
-  open_violation_on_expiration   = var.nrql-container-not-running.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-container-not-running.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-container-not-running.query, "nrql-container-name", "btc-rpc-explorer")
-    evaluation_offset = 3
-  }
-
-  critical {
-    operator              = var.nrql-container-not-running.operator
-    threshold             = var.nrql-container-not-running.threshold
-    threshold_duration    = var.nrql-container-not-running.threshold_duration
-    threshold_occurrences = var.nrql-container-not-running.threshold_occurrences
-  }
-}
-
-resource "newrelic_nrql_alert_condition" "btc-rpc-explorer-cache-not-running" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
-  type                         = "static"
-  name                         = "BTC-RPC-Explorer-Cache is not running"
-  enabled                      = true
-  violation_time_limit_seconds = var.nrql-container-not-running.violation_time_limit_seconds
-  value_function               = var.nrql-container-not-running.value_function
-
-  fill_option = var.nrql-container-not-running.fill_option
-
-  aggregation_window             = var.nrql-container-not-running.aggregation_window
-  expiration_duration            = var.nrql-container-not-running.expiration_duration
-  open_violation_on_expiration   = var.nrql-container-not-running.open_violation_on_expiration
-  close_violations_on_expiration = var.nrql-container-not-running.close_violations_on_expiration
-
-  nrql {
-    query             = replace(var.nrql-container-not-running.query, "nrql-container-name", "btc-rpc-explorer-cache")
-    evaluation_offset = 3
-  }
-
-  critical {
-    operator              = var.nrql-container-not-running.operator
-    threshold             = var.nrql-container-not-running.threshold
-    threshold_duration    = 300
-    threshold_occurrences = "ALL"
+  container_name = each.key
+  providers = {
+    newrelic = newrelic
   }
 }
