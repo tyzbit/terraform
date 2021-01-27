@@ -15,15 +15,26 @@ resource "newrelic_alert_policy_channel" "web-alerts" {
 module "general-web-checks" {
   source     = "./modules/synthetics-monitor"
   account_id = data.aws_ssm_parameter.account-id.value
-  policy_id  = newrelic_alert_policy.server-alerts.id
+  policy_id  = newrelic_alert_policy.web-checks.id
 
   for_each = {
-    qtosw   = { name = "QTOSW", enabled = true, uri = "https://qtosw.com", validation_string = "Witty" }
-    torrent = { name = "Torrent", enabled = true, uri = "https://torrent.qtosw.com", validation_string = "WebUI" }
-    rancher = { name = "Rancher", enabled = true, uri = "https://rancher.qtosw.com", validation_string = "Loading" }
-    cloud   = { name = "NextCloud", enabled = true, uri = "https://cloud.qtosw.com", validation_string = "Nextcloud" }
-    plex    = { name = "Plex", enabled = true, uri = "https://plex.qtosw.com/web/index.html", validation_string = "plex" }
-    bc      = { name = "BC", enabled = true, uri = "https://bc.qtosw.com", validation_string = "server is up" }
+    qtosw = { name = "QTOSW", enabled = true, verify_ssl = true,
+    uri = "https://qtosw.com", validation_string = "Witty" }
+
+    torrent = { name = "Torrent", enabled = true, verify_ssl = true,
+    uri = "https://torrent.qtosw.com", validation_string = "WebUI" }
+
+    rancher = { name = "Rancher", enabled = true, verify_ssl = false,
+    uri = "https://rancher.qtosw.com", validation_string = "Loading" }
+
+    cloud = { name = "NextCloud", enabled = true, verify_ssl = false,
+    uri = "https://cloud.qtosw.com", validation_string = "Nextcloud" }
+
+    plex = { name = "Plex", enabled = true, verify_ssl = false,
+    uri = "https://plex.qtosw.com/web/index.html", validation_string = "plex" }
+
+    bc = { name = "BC", enabled = true, verify_ssl = true,
+    uri = "https://bc.qtosw.com", validation_string = "server is up" }
   }
 
   name    = each.value.name
@@ -31,7 +42,7 @@ module "general-web-checks" {
 
   uri               = each.value.uri
   validation_string = each.value.validation_string
-  verify_ssl        = true
+  verify_ssl        = each.value.verify_ssl
 
   providers = {
     newrelic = newrelic

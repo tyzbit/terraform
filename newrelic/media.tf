@@ -15,7 +15,7 @@ resource "newrelic_alert_policy_channel" "media-alerts" {
 module "media-containers-not-running" {
   source     = "./modules/nrql-container-running"
   account_id = data.aws_ssm_parameter.account-id.value
-  policy_id  = newrelic_alert_policy.server-alerts.id
+  policy_id  = newrelic_alert_policy.media-alerts.id
 
   for_each = {
     Nginx          = { enabled = true, pretty_name = "NGINX" }

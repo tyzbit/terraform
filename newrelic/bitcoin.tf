@@ -15,7 +15,7 @@ resource "newrelic_alert_policy_channel" "bitcoin-alerts" {
 module "bitcoin-containers-not-running" {
   source     = "./modules/nrql-container-running"
   account_id = data.aws_ssm_parameter.account-id.value
-  policy_id  = newrelic_alert_policy.server-alerts.id
+  policy_id  = newrelic_alert_policy.bitcoin-alerts.id
 
   for_each = {
     electrumx              = { enabled = true, pretty_name = "Electrumx" }
