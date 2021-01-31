@@ -21,7 +21,7 @@ module "bitcoin-containers-not-running" {
     electrumx              = { enabled = true, pretty_name = "Electrumx" }
     bitcoin                = { enabled = true, pretty_name = "Bitcoin" }
     btc-rpc-explorer       = { enabled = true, pretty_name = "BTC-RPC-Explorer" }
-    btc-rpc-explorer-cache = { enabled = true, pretty_name = "Electrumx" }
+    btc-rpc-explorer-cache = { enabled = true, pretty_name = "BTC-RPC-Explorer-Cache" }
   }
 
   name    = "${each.value.pretty_name} is not running"
