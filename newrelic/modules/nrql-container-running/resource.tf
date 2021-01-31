@@ -10,17 +10,16 @@ resource "newrelic_nrql_alert_condition" "container-running" {
   fill_option = "none"
 
   aggregation_window             = 60
-  expiration_duration            = 900
+  expiration_duration            = 86400
   open_violation_on_expiration   = false
   close_violations_on_expiration = false
 
   nrql {
     query = replace(<<EOF
       FROM K8sContainerSample,ContainerSample
-      SELECT uniqueCount(status)
+      SELECT filter(count(*), WHERE status LIKE '%up%' OR status LIKE '%running%') as 'Running'
       WHERE (name = 'container-name')
         OR (containerName = 'container-name')
-        AND (status LIKE '%Up%' OR status LIKE '%Running%')
       FACET hostname
     EOF
     , "container-name", var.container_name)
