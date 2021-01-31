@@ -18,8 +18,8 @@ resource "newrelic_nrql_alert_condition" "container-running" {
     query = replace(<<EOF
       FROM K8sContainerSample,ContainerSample
       SELECT uniqueCount(status)
-      WHERE (entityName LIKE '%container-name%')
-        OR (containerName LIKE '%container-name%')
+      WHERE (name = 'container-name')
+        OR (containerName = 'container-name')
         AND (status LIKE '%Up%' OR status LIKE '%Running%')
       FACET hostname
     EOF
