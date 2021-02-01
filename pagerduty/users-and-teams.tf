@@ -43,6 +43,37 @@ resource "aws_ssm_parameter" "tyzbit-phone-address" {
   }
 }
 
+resource "pagerduty_schedule" "let-me-sleep" {
+  name      = "Let me sleep"
+  time_zone = "America/New_York"
+
+  layer {
+    name                         = "On-Call"
+    start                        = "2020-02-01T00:00:00-05:00"
+    rotation_virtual_start       = "2020-02-01T00:00:00-05:00"
+    rotation_turn_length_seconds = 86400
+    users                        = [pagerduty_user.tyzbit.id]
+
+    restriction {
+      type              = "daily_restriction"
+      start_time_of_day = "08:00:00"
+      duration_seconds  = 50400
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 5
+      start_time_of_day = "22:00:00"
+      duration_seconds  = 7200
+    }
+    restriction {
+      type              = "weekly_restriction"
+      start_day_of_week = 6
+      start_time_of_day = "22:00:00"
+      duration_seconds  = 7200
+    }
+  }
+}
+
 # resource "pagerduty_user_contact_method" "tyzbit-push" {
 #   user_id = pagerduty_user.tyzbit.id
 #   type    = "push_notification_contact_method"
