@@ -120,7 +120,7 @@ resource "newrelic_nrql_alert_condition" "system-temp-above-90" {
   nrql {
     query             = <<EOF
       FROM Log
-      SELECT average(sensor_temperature)
+      SELECT average(sensor_temperature_c)
       WHERE job_comment = 'Check the temperature of thermal_zone2'
       FACET hostname
       EOF
