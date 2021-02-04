@@ -130,7 +130,7 @@ resource "newrelic_nrql_alert_condition" "system-temp-above-90" {
   critical {
     operator              = "above"
     threshold             = 90
-    threshold_duration    = 300
+    threshold_duration    = 900
     threshold_occurrences = "ALL"
   }
 }
