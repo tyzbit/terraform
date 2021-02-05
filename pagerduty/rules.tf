@@ -14,11 +14,10 @@ resource "pagerduty_escalation_policy" "default-escalations" {
 }
 
 resource "pagerduty_service" "newrelic" {
-  name                    = "Alerts from NewRelic"
-  auto_resolve_timeout    = 14400
-  acknowledgement_timeout = "null"
-  escalation_policy       = pagerduty_escalation_policy.default-escalations.id
-  alert_creation          = "create_alerts_and_incidents"
+  name                 = "Alerts from NewRelic"
+  auto_resolve_timeout = 14400
+  escalation_policy    = pagerduty_escalation_policy.default-escalations.id
+  alert_creation       = "create_alerts_and_incidents"
 }
 
 resource "pagerduty_ruleset" "default" {
