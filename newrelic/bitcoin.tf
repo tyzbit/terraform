@@ -35,7 +35,7 @@ module "bitcoin-containers-not-running" {
 
 resource "newrelic_nrql_alert_condition" "electrumx-restarted" {
   account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.media-alerts.id
+  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
   type                         = "static"
   name                         = "ElectrumX Restarted"
   enabled                      = true
