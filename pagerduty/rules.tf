@@ -16,7 +16,7 @@ resource "pagerduty_escalation_policy" "default-escalations" {
 resource "pagerduty_service" "newrelic" {
   name                    = "Alerts from NewRelic"
   auto_resolve_timeout    = 14400
-  acknowledgement_timeout = 600
+  acknowledgement_timeout = "null"
   escalation_policy       = pagerduty_escalation_policy.default-escalations.id
   alert_creation          = "create_alerts_and_incidents"
 }
