@@ -33,6 +33,9 @@ module "general-web-checks" {
     plex = { name = "Plex", enabled = true, verify_ssl = false,
     uri = "https://plex.qtosw.com/web/index.html", validation_string = "plex" }
 
+    btc = { name = "BTC-RPC-Explorer", enabled = true, verify_ssl = false,
+    uri = "https://btc.qtosw.com", validation_string = "btc-rpc-explorer" }
+
     bc = { name = "BC", enabled = true, verify_ssl = true,
     uri = "https://bc.qtosw.com", validation_string = "server is up" }
   }
