@@ -33,7 +33,7 @@ module "bitcoin-containers-not-running" {
   }
 }
 
-resource "newrelic_nrql_alert_condition" "electrumx-restarted" {
+resource "newrelic_nrql_alert_condition" "electrumx-stale-file-handle" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
   type                         = "static"
@@ -54,7 +54,7 @@ resource "newrelic_nrql_alert_condition" "electrumx-restarted" {
       FROM Log
       SELECT count(timestamp)
       WHERE container_name = 'electrumx'
-        AND innermessage = 'ElectrumX server starting'
+        AND message LIKE '%stale file handle%'
       EOF
     evaluation_offset = 3
   }
