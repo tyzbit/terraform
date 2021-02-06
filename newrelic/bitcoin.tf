@@ -62,7 +62,7 @@ resource "newrelic_nrql_alert_condition" "electrumx-stale-file-handle" {
   critical {
     operator              = "above"
     threshold             = 0
-    threshold_duration    = 60
+    threshold_duration    = 120
     threshold_occurrences = "at_least_once"
   }
 }
