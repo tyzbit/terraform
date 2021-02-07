@@ -188,7 +188,7 @@ resource "newrelic_nrql_alert_condition" "k8s-volume-full-in-24-hours" {
     query             = <<EOF
       FROM K8sVolumeSample
       SELECT predictLinear(fsUsedPercent, 24 hours)
-      WHERE volumeName IS NOT LIKE '%default-token%' 
+      WHERE volumeName NOT LIKE '%default-token%' 
       FACET volumeName
       SINCE 1 hour ago
       EOF
