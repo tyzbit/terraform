@@ -168,7 +168,7 @@ resource "newrelic_nrql_alert_condition" "system-temp-above-90" {
   }
 }
 
-resource "newrelic_nrql_alert_condition" "k8s-volume-full-in-24-hours" {
+resource "newrelic_nrql_alert_condition" "k8s-volume-above-90" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.server-alerts.id
   type                         = "static"
@@ -187,17 +187,16 @@ resource "newrelic_nrql_alert_condition" "k8s-volume-full-in-24-hours" {
   nrql {
     query             = <<EOF
       FROM K8sVolumeSample
-      SELECT predictLinear(fsUsedPercent, 24 hours)
+      SELECT average(fsUsedPercent)
       WHERE volumeName NOT LIKE '%default-token%' 
       FACET volumeName
-      SINCE 1 hour ago
       EOF
     evaluation_offset = 3
   }
 
   critical {
     operator              = "above"
-    threshold             = 100
+    threshold             = 90
     threshold_duration    = 900
     threshold_occurrences = "ALL"
   }
