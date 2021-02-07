@@ -167,3 +167,37 @@ resource "newrelic_nrql_alert_condition" "system-temp-above-90" {
     threshold_occurrences = "ALL"
   }
 }
+
+resource "newrelic_nrql_alert_condition" "k8s-volume-full-in-24-hours" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.server-alerts.id
+  type                         = "static"
+  name                         = "K8S volume will fill up in less than a day"
+  enabled                      = true
+  violation_time_limit_seconds = 3600
+  value_function               = "single_value"
+
+  fill_option = "none"
+
+  aggregation_window             = 60
+  expiration_duration            = 3600
+  open_violation_on_expiration   = true
+  close_violations_on_expiration = false
+
+  nrql {
+    query             = <<EOF
+      FROM K8sVolumeSample
+      SELECT predictLinear(fsUsedPercent, 24 hours) 
+      FACET volumeName
+      SINCE 12 hours ago
+      EOF
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "above"
+    threshold             = 100
+    threshold_duration    = 900
+    threshold_occurrences = "ALL"
+  }
+}
