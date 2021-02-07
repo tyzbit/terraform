@@ -44,7 +44,7 @@ resource "newrelic_nrql_alert_condition" "nfs-disk-above-90" {
 
   aggregation_window             = 60
   expiration_duration            = 3600
-  open_violation_on_expiration   = true
+  open_violation_on_expiration   = false
   close_violations_on_expiration = false
 
   nrql {
@@ -147,7 +147,7 @@ resource "newrelic_nrql_alert_condition" "system-temp-above-90" {
 
   aggregation_window             = 60
   expiration_duration            = 3600
-  open_violation_on_expiration   = true
+  open_violation_on_expiration   = false
   close_violations_on_expiration = false
 
   nrql {
@@ -181,7 +181,7 @@ resource "newrelic_nrql_alert_condition" "k8s-volume-above-90" {
 
   aggregation_window             = 60
   expiration_duration            = 3600
-  open_violation_on_expiration   = true
+  open_violation_on_expiration   = false
   close_violations_on_expiration = false
 
   nrql {
