@@ -172,7 +172,7 @@ resource "newrelic_nrql_alert_condition" "k8s-volume-above-90" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.server-alerts.id
   type                         = "static"
-  name                         = "K8S volume will fill up in less than a day"
+  name                         = "K8S volume above 90 percent used"
   enabled                      = true
   violation_time_limit_seconds = 3600
   value_function               = "single_value"
