@@ -23,28 +23,28 @@ resource "pagerduty_service" "newrelic" {
 
 resource "pagerduty_ruleset" "default" {
   name = "Primary"
-  team {
-    id = pagerduty_team.qtosw-administrators.id
-  }
+  # team {
+  #   id = pagerduty_team.qtosw-administrators.id
+  # }
 }
 
-# resource "pagerduty_event_rule" "default-event-rule-1" {
-#   action_json = jsonencode([
-#     [
-#       "route",
-#       pagerduty_service.newrelic.id
-#     ],
-#     [
-#       "severity",
-#       "critical"
-#     ],
-#     [
-#       "annotate",
-#       "Managed by Terraform"
-#     ]
-#   ])
-#   condition_json = jsonencode([
-#     "and",
-#     ["exists", ["path", "details"], ""]
-#   ])
-# }
+resource "pagerduty_event_rule" "default-event-rule-1" {
+  action_json = jsonencode([
+    [
+      "route",
+      pagerduty_service.newrelic.id
+    ],
+    [
+      "severity",
+      "critical"
+    ],
+    [
+      "annotate",
+      "Managed by Terraform"
+    ]
+  ])
+  condition_json = jsonencode([
+    "and",
+    ["equals", ["path", "client"], "New Relic"]
+  ])
+}

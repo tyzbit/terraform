@@ -1,13 +1,13 @@
-resource "pagerduty_team" "qtosw-administrators" {
-  name        = "QTOSW Administrators"
-  description = "Quick, Administrate Something Witty"
-}
+# resource "pagerduty_team" "qtosw-administrators" {
+#   name        = "QTOSW Administrators"
+#   description = "Quick, Administrate Something Witty"
+# }
 
-resource "pagerduty_team_membership" "tyzbit-qtosw" {
-  user_id = pagerduty_user.tyzbit.id
-  team_id = pagerduty_team.qtosw-administrators.id
-  role    = "manager"
-}
+# resource "pagerduty_team_membership" "tyzbit-qtosw" {
+#   user_id = pagerduty_user.tyzbit.id
+#   team_id = pagerduty_team.qtosw-administrators.id
+#   role    = "manager"
+# }
 
 resource "aws_ssm_parameter" "tyzbit-email" {
   name  = "/global/pagerduty/tyzbit-email"
