@@ -24,7 +24,7 @@ module "bitcoin-containers-not-running" {
     btc-rpc-explorer-cache = { enabled = true, pretty_name = "BTC-RPC-Explorer-Cache", container_count = 2 }
   }
 
-  name    = "${each.value.pretty_name} is not running"
+  name    = "Not enough instances of ${each.value.pretty_name} running"
   enabled = each.value.enabled
 
   container_name  = each.key

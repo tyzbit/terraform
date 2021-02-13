@@ -29,7 +29,7 @@ module "media-containers-not-running" {
     plex           = { enabled = true, pretty_name = "PleX", container_count = 2 }
   }
 
-  name    = "${each.value.pretty_name} is not running"
+  name    = "Not enough instances of ${each.value.pretty_name} running"
   enabled = each.value.enabled
 
   container_name  = each.key
