@@ -22,7 +22,7 @@ resource "pagerduty_service" "newrelic" {
 }
 
 resource "pagerduty_ruleset" "default" {
-  name = "Primary"
+  name = "Default Global"
   # team {
   #   id = pagerduty_team.qtosw-administrators.id
   # }
