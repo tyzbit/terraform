@@ -31,38 +31,38 @@ module "system-metrics-above-90" {
   threshold = 90
 }
 
-resource "newrelic_nrql_alert_condition" "nfs-disk-above-90" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.server-alerts.id
-  type                         = "static"
-  name                         = "NFS mount above 90 percent used"
-  enabled                      = true
-  violation_time_limit_seconds = 3600
-  value_function               = "single_value"
+# resource "newrelic_nrql_alert_condition" "nfs-disk-above-90" {
+#   account_id                   = data.aws_ssm_parameter.account-id.value
+#   policy_id                    = newrelic_alert_policy.server-alerts.id
+#   type                         = "static"
+#   name                         = "NFS mount above 90 percent used"
+#   enabled                      = true
+#   violation_time_limit_seconds = 3600
+#   value_function               = "single_value"
 
-  fill_option = "none"
+#   fill_option = "none"
 
-  aggregation_window             = 60
-  expiration_duration            = 3600
-  open_violation_on_expiration   = false
-  close_violations_on_expiration = false
+#   aggregation_window             = 60
+#   expiration_duration            = 3600
+#   open_violation_on_expiration   = false
+#   close_violations_on_expiration = false
 
-  nrql {
-    query             = <<EOF
-      FROM NFSSample
-      SELECT average(diskUsedPercent)
-      FACET device
-      EOF
-    evaluation_offset = 3
-  }
+#   nrql {
+#     query             = <<EOF
+#       FROM NFSSample
+#       SELECT average(diskUsedPercent)
+#       FACET device
+#       EOF
+#     evaluation_offset = 3
+#   }
 
-  critical {
-    operator              = "above"
-    threshold             = 90
-    threshold_duration    = 900
-    threshold_occurrences = "ALL"
-  }
-}
+#   critical {
+#     operator              = "above"
+#     threshold             = 90
+#     threshold_duration    = 900
+#     threshold_occurrences = "ALL"
+#   }
+# }
 
 module "server-vms-not-running" {
   source     = "./modules/nrql-vm-running"
