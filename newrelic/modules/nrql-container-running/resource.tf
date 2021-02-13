@@ -20,15 +20,14 @@ resource "newrelic_nrql_alert_condition" "container-running" {
       SELECT filter(count(*), WHERE status LIKE '%up%' OR status LIKE '%running%') as 'Running'
       WHERE (name = 'container-name')
         OR (containerName = 'container-name')
-      FACET hostname
     EOF
     , "container-name", var.container_name)
     evaluation_offset = 3
   }
 
   critical {
-    operator              = "equals"
-    threshold             = 0
+    operator              = "below"
+    threshold             = var.container_count
     threshold_duration    = 300
     threshold_occurrences = "ALL"
   }

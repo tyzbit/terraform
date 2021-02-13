@@ -18,21 +18,22 @@ module "media-containers-not-running" {
   policy_id  = newrelic_alert_policy.media-alerts.id
 
   for_each = {
-    Nginx          = { enabled = true, pretty_name = "NGINX" }
-    nextcloudcache = { enabled = true, pretty_name = "NextCloudCache" }
-    NextCloudDB    = { enabled = true, pretty_name = "NextCloudDB" }
-    NextCloud      = { enabled = true, pretty_name = "NextCloud" }
-    motioneye      = { enabled = true, pretty_name = "MotionEye" }
-    motion         = { enabled = true, pretty_name = "Motion" }
-    SickChill      = { enabled = true, pretty_name = "SickChill" }
-    Deluge         = { enabled = true, pretty_name = "Deluge" }
-    plex           = { enabled = true, pretty_name = "PleX" }
+    Nginx          = { enabled = true, pretty_name = "NGINX", container_count = 1 }
+    nextcloudcache = { enabled = true, pretty_name = "NextCloudCache", container_count = 1 }
+    NextCloudDB    = { enabled = true, pretty_name = "NextCloudDB", container_count = 1 }
+    NextCloud      = { enabled = true, pretty_name = "NextCloud", container_count = 1 }
+    motioneye      = { enabled = true, pretty_name = "MotionEye", container_count = 1 }
+    motion         = { enabled = true, pretty_name = "Motion", container_count = 1 }
+    SickChill      = { enabled = true, pretty_name = "SickChill", container_count = 1 }
+    Deluge         = { enabled = true, pretty_name = "Deluge", container_count = 1 }
+    plex           = { enabled = true, pretty_name = "PleX", container_count = 2 }
   }
 
   name    = "${each.value.pretty_name} is not running"
   enabled = each.value.enabled
 
-  container_name = each.key
+  container_name  = each.key
+  container_count = each.value.container_count
   providers = {
     newrelic = newrelic
   }
