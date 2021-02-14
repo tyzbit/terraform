@@ -5,7 +5,7 @@ terraform {
   required_providers {
     newrelic = {
       source  = "newrelic/newrelic"
-      version = "~> 2.15.0"
+      version = "~> 2.18.0"
     }
   }
 
@@ -18,7 +18,7 @@ terraform {
 }
 
 provider "newrelic" {
-  version = "~> 2.15.0"
+  version = "~> 2.18.0"
   region  = "US"
 }
 
