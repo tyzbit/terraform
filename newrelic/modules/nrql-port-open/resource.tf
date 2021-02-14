@@ -19,14 +19,14 @@ resource "newrelic_nrql_alert_condition" "check-port" {
       FROM Log
       SELECT count(*)
       WHERE job_comment = 'job-comment'
-        AND port_open = 'true'
+        AND port_open = 'false'
       EOF
     , "job-comment", var.job_comment)
     evaluation_offset = 3
   }
 
   critical {
-    operator              = "equals"
+    operator              = "above"
     threshold             = 0
     threshold_duration    = 300
     threshold_occurrences = "ALL"

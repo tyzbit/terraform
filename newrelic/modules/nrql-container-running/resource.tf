@@ -18,8 +18,7 @@ resource "newrelic_nrql_alert_condition" "container-running" {
     query = replace(<<EOF
       FROM K8sContainerSample,ContainerSample
       SELECT filter(uniquecount(hostname), WHERE status LIKE '%up%' OR status LIKE '%running%') as 'Running'
-      WHERE (name = 'container-name')
-        OR (displayName = 'container-name')
+      WHERE (name OR displayName) = 'container-name'
     EOF
     , "container-name", var.container_name)
     evaluation_offset = 3
