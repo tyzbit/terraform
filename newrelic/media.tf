@@ -18,15 +18,15 @@ module "media-containers-not-running" {
   policy_id  = newrelic_alert_policy.media-alerts.id
 
   for_each = {
-    Nginx          = { enabled = true, pretty_name = "NGINX", container_count = 1 }
-    nextcloudcache = { enabled = true, pretty_name = "NextCloudCache", container_count = 1 }
-    NextCloudDB    = { enabled = true, pretty_name = "NextCloudDB", container_count = 1 }
-    NextCloud      = { enabled = true, pretty_name = "NextCloud", container_count = 1 }
-    motioneye      = { enabled = true, pretty_name = "MotionEye", container_count = 1 }
-    motion         = { enabled = true, pretty_name = "Motion", container_count = 1 }
-    SickChill      = { enabled = true, pretty_name = "SickChill", container_count = 1 }
-    Deluge         = { enabled = true, pretty_name = "Deluge", container_count = 1 }
-    plex           = { enabled = true, pretty_name = "PleX", container_count = 2 }
+    Nginx           = { enabled = true, pretty_name = "NGINX", container_count = 1 }
+    nextcloud-cache = { enabled = true, pretty_name = "NextCloudCache", container_count = 1 }
+    nextcloud-db    = { enabled = true, pretty_name = "NextCloudDB", container_count = 1 }
+    nextcloud       = { enabled = true, pretty_name = "NextCloud", container_count = 1 }
+    motioneye       = { enabled = true, pretty_name = "MotionEye", container_count = 1 }
+    motion          = { enabled = true, pretty_name = "Motion", container_count = 1 }
+    SickChill       = { enabled = true, pretty_name = "SickChill", container_count = 1 }
+    Deluge          = { enabled = true, pretty_name = "Deluge", container_count = 1 }
+    plex            = { enabled = true, pretty_name = "PleX", container_count = 2 }
   }
 
   name    = "Not enough instances of ${each.value.pretty_name} running"
