@@ -23,7 +23,7 @@ module "media-containers-not-running" {
     nextcloud-db    = { enabled = true, pretty_name = "NextCloudDB", container_count = 1 }
     nextcloud       = { enabled = true, pretty_name = "NextCloud", container_count = 1 }
     motioneye       = { enabled = true, pretty_name = "MotionEye", container_count = 1 }
-    motion          = { enabled = true, pretty_name = "Motion", container_count = 1 }
+    motion-browser  = { enabled = true, pretty_name = "Motion", container_count = 1 }
     SickChill       = { enabled = true, pretty_name = "SickChill", container_count = 1 }
     Deluge          = { enabled = true, pretty_name = "Deluge", container_count = 1 }
     plex            = { enabled = true, pretty_name = "PleX", container_count = 2 }
