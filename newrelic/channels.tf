@@ -8,6 +8,36 @@ resource "aws_ssm_parameter" "email" {
   }
 }
 
+resource "aws_ssm_parameter" "statuspage-qtosw-email" {
+  name  = "/global/newrelic/statuspage-qtosw-email"
+  type  = "SecureString"
+  value = ""
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "statuspage-primary-plex-email" {
+  name  = "/global/newrelic/statuspage-primary-plex-email"
+  type  = "SecureString"
+  value = ""
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "statuspage-secondary-plex-email" {
+  name  = "/global/newrelic/statuspage-secondary-plex-email"
+  type  = "SecureString"
+  value = ""
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
 resource "newrelic_alert_channel" "email-channel" {
   name = "me"
   type = "email"
@@ -44,6 +74,36 @@ resource "newrelic_alert_channel" "pagerduty" {
 
   config {
     service_key = data.aws_ssm_parameter.pagerduty-key.value
+  }
+}
+
+resource "newrelic_alert_channel" "statuspage-qtosw-email" {
+  name = "Statuspage - qtosw"
+  type = "email"
+
+  config {
+    recipients              = aws_ssm_parameter.statuspage-qtosw-email.value
+    include_json_attachment = "0"
+  }
+}
+
+resource "newrelic_alert_channel" "statuspage-primary-plex-email" {
+  name = "Statuspage - Primary Plex"
+  type = "email"
+
+  config {
+    recipients              = aws_ssm_parameter.statuspage-primary-plex-email.value
+    include_json_attachment = "0"
+  }
+}
+
+resource "newrelic_alert_channel" "statuspage-secondary-plex-email" {
+  name = "Statuspage - Secondary Plex"
+  type = "email"
+
+  config {
+    recipients              = aws_ssm_parameter.statuspage-secondary-plex-email.value
+    include_json_attachment = "0"
   }
 }
 

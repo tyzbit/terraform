@@ -42,7 +42,7 @@ resource "newrelic_one_dashboard" "status-page" {
   permissions = "public_read_only"
 
   page {
-    name = "Status"
+    name = "Status page"
 
     widget_bar {
       title  = "Container Uptime"
