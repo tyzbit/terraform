@@ -10,7 +10,8 @@ resource "kubernetes_deployment" "atlantis" {
     }
     template {
       metadata {
-        labels = { app = "atlantis" }
+        annotations = { "linkerd.io/inject" = "enabled" }
+        labels      = { app = "atlantis" }
       }
       spec {
         automount_service_account_token = true
@@ -176,7 +177,7 @@ resource "kubernetes_service" "atlantis" {
     }
     selector = { app = "atlantis" }
 
-    type = "LoadBalancer"
+    type = "NodePort"
   }
 
   lifecycle {
