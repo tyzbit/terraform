@@ -1,4 +1,4 @@
-resource "newrelic_synthetics_monitor" "ssl" {
+resource "newrelic_synthetics_monitor" "monitor" {
   name      = var.name
   type      = "SIMPLE"
   frequency = 10
@@ -10,9 +10,9 @@ resource "newrelic_synthetics_monitor" "ssl" {
   verify_ssl        = var.verify_ssl
 }
 
-resource "newrelic_synthetics_alert_condition" "ssl" {
+resource "newrelic_synthetics_alert_condition" "monitor" {
   policy_id = var.policy_id
 
   name       = "${var.name} Web Alert Policy"
-  monitor_id = newrelic_synthetics_monitor.ssl.id
+  monitor_id = newrelic_synthetics_monitor.monitor.id
 }
