@@ -64,24 +64,24 @@ module "system-metrics-above-90" {
 #   }
 # }
 
-module "server-vms-not-running" {
-  source     = "./modules/nrql-vm-running"
-  account_id = data.aws_ssm_parameter.account-id.value
-  policy_id  = newrelic_alert_policy.server-alerts.id
+# module "server-vms-not-running" {
+#   source     = "./modules/nrql-vm-running"
+#   account_id = data.aws_ssm_parameter.account-id.value
+#   policy_id  = newrelic_alert_policy.server-alerts.id
 
-  for_each = {
-    foreman   = { enabled = true }
-    keymaster = { enabled = true }
-  }
+#   for_each = {
+#     foreman   = { enabled = true }
+#     keymaster = { enabled = true }
+#   }
 
-  name    = "${each.key} is not running"
-  enabled = each.value.enabled
+#   name    = "${each.key} is not running"
+#   enabled = each.value.enabled
 
-  vm_name = each.key
-  providers = {
-    newrelic = newrelic
-  }
-}
+#   vm_name = each.key
+#   providers = {
+#     newrelic = newrelic
+#   }
+# }
 
 resource "newrelic_nrql_alert_condition" "local-ip-change" {
   account_id                   = data.aws_ssm_parameter.account-id.value
