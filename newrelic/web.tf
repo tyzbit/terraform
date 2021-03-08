@@ -89,7 +89,7 @@ module "general-web-checks" {
       name              = "Plex Primary",
       enabled           = true,
       verify_ssl        = false,
-      uri               = "https://plex.qtosw.com/web/index.html",
+      uri               = "https://plex.qtosw.com:32400/web/index.html",
       validation_string = "plex",
       policy_id         = newrelic_alert_policy.statuspage-primary-plex-web-checks.id
     }
