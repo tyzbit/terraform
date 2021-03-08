@@ -12,6 +12,18 @@ resource "newrelic_alert_policy_channel" "media-alerts" {
   ]
 }
 
+resource "newrelic_alert_policy" "media-alerts-slack" {
+  name                = "Media Alerts"
+  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
+}
+
+resource "newrelic_alert_policy_channel" "media-alerts-slack" {
+  policy_id = newrelic_alert_policy.media-alerts-slack.id
+  channel_ids = [
+    newrelic_alert_channel.slack-channel.id
+  ]
+}
+
 module "media-containers-not-running" {
   source     = "./modules/nrql-container-running"
   account_id = data.aws_ssm_parameter.account-id.value
@@ -41,7 +53,7 @@ module "media-containers-not-running" {
 
 resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
   account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.media-alerts.id
+  policy_id                    = newrelic_alert_policy.media-alerts-slack.id
   type                         = "static"
   name                         = "RARs found in Downloads folder"
   enabled                      = true
