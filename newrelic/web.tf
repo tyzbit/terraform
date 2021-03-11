@@ -85,6 +85,15 @@ module "general-web-checks" {
       policy_id         = newrelic_alert_policy.web-checks.id
     }
 
+    files = {
+      name              = "Files",
+      enabled           = true,
+      verify_ssl        = false,
+      uri               = "https://files.qtosw.com",
+      validation_string = "File Browser",
+      policy_id         = newrelic_alert_policy.web-checks.id
+    }
+
     plex-1 = {
       name              = "Plex Primary",
       enabled           = true,
