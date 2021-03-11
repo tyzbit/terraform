@@ -244,6 +244,6 @@ resource "newrelic_nrql_alert_condition" "fah-interrupted" {
     operator              = "above"
     threshold             = 0
     threshold_duration    = 300
-    threshold_occurrences = "ANY"
+    threshold_occurrences = "ALL"
   }
 }
