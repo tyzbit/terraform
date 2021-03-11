@@ -51,7 +51,7 @@ resource "newrelic_nrql_alert_condition" "greater-than-30k-logs-per-hour" {
   critical {
     operator              = "above"
     threshold             = 30000
-    threshold_duration    = 120
+    threshold_duration    = 600
     threshold_occurrences = "ALL"
   }
 }
