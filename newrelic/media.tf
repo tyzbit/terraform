@@ -13,7 +13,7 @@ resource "newrelic_alert_policy_channel" "media-alerts" {
 }
 
 resource "newrelic_alert_policy" "media-alerts-slack" {
-  name                = "Media Alerts"
+  name                = "Media Alerts Slack"
   incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
 }
 
