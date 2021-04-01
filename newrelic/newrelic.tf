@@ -24,34 +24,34 @@ resource "newrelic_alert_policy_channel" "newrelic-alerts-slack" {
   ]
 }
 
-resource "newrelic_nrql_alert_condition" "greater-than-30k-logs-per-hour" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.newrelic-alerts-slack.id
-  type                         = "static"
-  name                         = "More than 30k logs per hour being ingested"
-  enabled                      = true
-  violation_time_limit_seconds = 3600
-  value_function               = "single_value"
+# resource "newrelic_nrql_alert_condition" "greater-than-30k-logs-per-hour" {
+#   account_id                   = data.aws_ssm_parameter.account-id.value
+#   policy_id                    = newrelic_alert_policy.newrelic-alerts.id
+#   type                         = "static"
+#   name                         = "More than 30k logs per hour being ingested"
+#   enabled                      = true
+#   violation_time_limit_seconds = 3600
+#   value_function               = "single_value"
 
-  fill_option = "none"
+#   fill_option = "none"
 
-  aggregation_window             = 60
-  expiration_duration            = 3600
-  open_violation_on_expiration   = true
-  close_violations_on_expiration = false
+#   aggregation_window             = 60
+#   expiration_duration            = 3600
+#   open_violation_on_expiration   = true
+#   close_violations_on_expiration = false
 
-  nrql {
-    query             = <<EOF
-      FROM Log
-      SELECT rate(count(*), 1 hour)
-      EOF
-    evaluation_offset = 3
-  }
+#   nrql {
+#     query             = <<EOF
+#       FROM Log
+#       SELECT rate(count(*), 1 hour)
+#       EOF
+#     evaluation_offset = 3
+#   }
 
-  critical {
-    operator              = "above"
-    threshold             = 30000
-    threshold_duration    = 600
-    threshold_occurrences = "ALL"
-  }
-}
+#   critical {
+#     operator              = "above"
+#     threshold             = 30000
+#     threshold_duration    = 600
+#     threshold_occurrences = "ALL"
+#   }
+# }
