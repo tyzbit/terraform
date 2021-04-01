@@ -26,7 +26,7 @@ resource "newrelic_alert_policy_channel" "newrelic-alerts-slack" {
 
 resource "newrelic_nrql_alert_condition" "greater-than-30k-logs-per-hour" {
   account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.newrelic-alerts.id
+  policy_id                    = newrelic_alert_policy.newrelic-alerts-slack.id
   type                         = "static"
   name                         = "More than 30k logs per hour being ingested"
   enabled                      = true
