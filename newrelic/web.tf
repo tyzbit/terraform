@@ -12,6 +12,18 @@ resource "newrelic_alert_policy_channel" "web-alerts" {
   ]
 }
 
+resource "newrelic_alert_policy" "web-checks-slack" {
+  name                = "Web Checks Slack"
+  incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
+}
+
+resource "newrelic_alert_policy_channel" "web-alerts-slack" {
+  policy_id = newrelic_alert_policy.web-checks-slack.id
+  channel_ids = [
+    newrelic_alert_channel.slack-channel.id
+  ]
+}
+
 resource "newrelic_alert_policy" "statuspage-qtosw-web-checks" {
   name                = "Statuspage - qtosw"
   incident_preference = "PER_CONDITION_AND_TARGET" # PER_POLICY is default
@@ -91,7 +103,7 @@ module "general-web-checks" {
       verify_ssl        = false,
       uri               = "https://files.qtosw.com",
       validation_string = "File Browser",
-      policy_id         = newrelic_alert_policy.web-checks.id
+      policy_id         = newrelic_alert_policy.web-checks-slack.id
     }
 
     plex-1 = {
