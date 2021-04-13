@@ -67,3 +67,38 @@ resource "newrelic_nrql_alert_condition" "electrumx-stale-file-handle" {
     threshold_occurrences = "at_least_once"
   }
 }
+
+resource "newrelic_nrql_alert_condition" "electrumx-daemon-connection-problem" {
+  account_id                   = data.aws_ssm_parameter.account-id.value
+  policy_id                    = newrelic_alert_policy.bitcoin-alerts.id
+  type                         = "static"
+  name                         = "ElectrumX Daemon Connection Problem"
+  enabled                      = true
+  violation_time_limit_seconds = 604800
+  value_function               = "single_value"
+
+  fill_option = "none"
+
+  aggregation_window             = 60
+  expiration_duration            = 120
+  open_violation_on_expiration   = false
+  close_violations_on_expiration = false
+
+  nrql {
+    query             = <<EOF
+      FROM Log
+      SELECT count(*)
+      WHERE container_name = 'electrumx'
+      AND message LIKE '%Daemon:connection problem%'
+      FACET host
+      EOF
+    evaluation_offset = 3
+  }
+
+  critical {
+    operator              = "above"
+    threshold             = 0
+    threshold_duration    = 120
+    threshold_occurrences = "ALL"
+  }
+}
