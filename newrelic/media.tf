@@ -30,6 +30,7 @@ module "media-containers-not-running" {
   policy_id  = newrelic_alert_policy.media-alerts.id
 
   for_each = {
+    frigate         = { enabled = true, pretty_name = "Frigate", container_count = 1 }
     Nginx           = { enabled = true, pretty_name = "NGINX", container_count = 1 }
     nextcloud-cache = { enabled = true, pretty_name = "NextCloudCache", container_count = 1 }
     nextcloud-db    = { enabled = true, pretty_name = "NextCloudDB", container_count = 1 }
