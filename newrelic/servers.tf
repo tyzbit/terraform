@@ -137,7 +137,7 @@ module "server-port-checks" {
 
   for_each = {
     pizero = { enabled = true, job_comment = "Check that pizero SSH is open" },
-    qtosw  = { enabled = true, job_comment = "Check that qtosw vpn is open" },
+    # qtosw  = { enabled = true, job_comment = "Check that qtosw vpn is open" },
   }
 
   name    = "${each.value.job_comment} failed"
