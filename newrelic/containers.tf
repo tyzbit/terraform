@@ -58,11 +58,11 @@ resource "newrelic_nrql_alert_condition" "container-oom" {
   }
 }
 
-resource "newrelic_nrql_alert_condition" "fah-interrupted" {
+resource "newrelic_nrql_alert_condition" "flux-reconcile-error" {
   account_id                   = data.aws_ssm_parameter.account-id.value
   policy_id                    = newrelic_alert_policy.container-alerts-slack.id
   type                         = "static"
-  name                         = "FoldingAtHome Interrupted Errors"
+  name                         = "Flux Error Reconciling"
   enabled                      = true
   violation_time_limit_seconds = 3600
   value_function               = "single_value"
@@ -78,8 +78,8 @@ resource "newrelic_nrql_alert_condition" "fah-interrupted" {
     query             = <<EOF
       FROM Log
       SELECT count(*)
-      WHERE container_name = 'foldingathome'
-      AND message LIKE '%INTERRUPTED%' 
+      WHERE namespace_name = 'flux-system'
+      AND message LIKE '%Reconciler error%' 
       EOF
     evaluation_offset = 3
   }
