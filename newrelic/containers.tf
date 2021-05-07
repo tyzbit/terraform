@@ -71,7 +71,7 @@ resource "newrelic_nrql_alert_condition" "flux-reconcile-error" {
 
   aggregation_window             = 60
   expiration_duration            = 3600
-  open_violation_on_expiration   = true
+  open_violation_on_expiration   = false
   close_violations_on_expiration = false
 
   nrql {
