@@ -18,10 +18,10 @@ module "bitcoin-containers-not-running" {
   policy_id  = newrelic_alert_policy.bitcoin-alerts.id
 
   for_each = {
-    electrumx              = { enabled = true, pretty_name = "Electrumx", container_count = 2 }
+    electrumx              = { enabled = true, pretty_name = "Electrumx", container_count = 1 }
     bitcoin                = { enabled = true, pretty_name = "Bitcoin", container_count = 2 }
-    btc-rpc-explorer       = { enabled = true, pretty_name = "BTC-RPC-Explorer", container_count = 2 }
-    btc-rpc-explorer-cache = { enabled = true, pretty_name = "BTC-RPC-Explorer-Cache", container_count = 2 }
+    btc-rpc-explorer       = { enabled = true, pretty_name = "BTC-RPC-Explorer", container_count = 1 }
+    btc-rpc-explorer-cache = { enabled = true, pretty_name = "BTC-RPC-Explorer-Cache", container_count = 1 }
   }
 
   name    = "Not enough instances of ${each.value.pretty_name} running"
