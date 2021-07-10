@@ -122,6 +122,6 @@ resource "newrelic_nrql_alert_condition" "python-bus-error" {
     operator              = "above"
     threshold             = 0
     threshold_duration    = 300
-    threshold_occurrences = "ALL"
+    threshold_occurrences = "at_least_once"
   }
 }
