@@ -32,13 +32,12 @@ module "media-containers-not-running" {
   for_each = {
     frigate          = { enabled = true, pretty_name = "Frigate", container_count = 1 }
     discord-archiver = { enabled = true, pretty_name = "Discord Archive.org bot", container_count = 1 }
-    Nginx            = { enabled = true, pretty_name = "NGINX", container_count = 1 }
     nextcloud-cache  = { enabled = true, pretty_name = "NextCloudCache", container_count = 1 }
     nextcloud-db     = { enabled = true, pretty_name = "NextCloudDB", container_count = 1 }
     nextcloud        = { enabled = true, pretty_name = "NextCloud", container_count = 1 }
     motioneye        = { enabled = true, pretty_name = "MotionEye", container_count = 1 }
-    SickChill        = { enabled = true, pretty_name = "SickChill", container_count = 1 }
-    Deluge           = { enabled = true, pretty_name = "Deluge", container_count = 1 }
+    sickchill        = { enabled = true, pretty_name = "SickChill", container_count = 1 }
+    deluge           = { enabled = true, pretty_name = "Deluge", container_count = 1 }
     plex             = { enabled = true, pretty_name = "PleX", container_count = 1 }
     plex-secondary   = { enabled = true, pretty_name = "PleX secondary", container_count = 1 }
     # motion-browser  = { enabled = true, pretty_name = "Motion", container_count = 1 }
