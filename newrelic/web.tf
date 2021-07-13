@@ -70,15 +70,6 @@ module "general-web-checks" {
   source = "./modules/simple-synthetics-monitor"
 
   for_each = {
-    bc = {
-      name              = "BC",
-      enabled           = true,
-      verify_ssl        = true,
-      uri               = "https://bc.qtosw.com",
-      validation_string = "server is up",
-      policy_id         = newrelic_alert_policy.web-checks.id
-    }
-
     btc = {
       name              = "BTC-RPC-Explorer",
       enabled           = true,
