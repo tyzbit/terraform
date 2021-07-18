@@ -53,35 +53,35 @@ module "media-containers-not-running" {
   }
 }
 
-resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
-  account_id                   = data.aws_ssm_parameter.account-id.value
-  policy_id                    = newrelic_alert_policy.media-alerts-slack.id
-  type                         = "static"
-  name                         = "RARs found in Downloads folder"
-  enabled                      = true
-  violation_time_limit_seconds = 604800
-  value_function               = "single_value"
+# resource "newrelic_nrql_alert_condition" "rars-found-in-downloads" {
+#   account_id                   = data.aws_ssm_parameter.account-id.value
+#   policy_id                    = newrelic_alert_policy.media-alerts-slack.id
+#   type                         = "static"
+#   name                         = "RARs found in Downloads folder"
+#   enabled                      = true
+#   violation_time_limit_seconds = 604800
+#   value_function               = "single_value"
 
-  fill_option = "none"
+#   fill_option = "none"
 
-  aggregation_window             = 60
-  expiration_duration            = 120
-  open_violation_on_expiration   = false
-  close_violations_on_expiration = false
+#   aggregation_window             = 60
+#   expiration_duration            = 120
+#   open_violation_on_expiration   = false
+#   close_violations_on_expiration = false
 
-  nrql {
-    query             = <<EOF
-      FROM Log
-      SELECT latest(files_found)
-      WHERE job_comment = 'Count RARs in downloads folder'
-      EOF
-    evaluation_offset = 3
-  }
+#   nrql {
+#     query             = <<EOF
+#       FROM Log
+#       SELECT latest(files_found)
+#       WHERE job_comment = 'Count RARs in downloads folder'
+#       EOF
+#     evaluation_offset = 3
+#   }
 
-  critical {
-    operator              = "above"
-    threshold             = 0
-    threshold_duration    = 60
-    threshold_occurrences = "at_least_once"
-  }
-}
+#   critical {
+#     operator              = "above"
+#     threshold             = 0
+#     threshold_duration    = 60
+#     threshold_occurrences = "at_least_once"
+#   }
+# }
