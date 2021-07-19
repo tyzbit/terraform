@@ -132,7 +132,7 @@ resource "newrelic_nrql_alert_condition" "failed-replica" {
   type                         = "static"
   name                         = "Failed Longhorn replica"
   enabled                      = true
-  violation_time_limit_seconds = 3600
+  violation_time_limit_seconds = 600
   value_function               = "single_value"
 
   fill_option = "none"
